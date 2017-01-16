@@ -1,0 +1,26 @@
+[
+    {
+        "method": "post",
+        "path": "/sql/format"
+    },
+    {
+        "method": "post",
+        "path": "/sql/checksyntax"
+    },
+    {
+        "method": "post",
+        "path": "/process"
+    },
+    {
+        "method": "post",
+        "path": "/course"
+    },
+    {
+        "method": "delete",
+        "path": "/course/:courseid"
+    },
+    {
+        "method": "get",
+        "path": "/link/exists/course/:courseid"
+    }
+]
