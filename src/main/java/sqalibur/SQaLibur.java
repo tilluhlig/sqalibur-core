@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.google.gson.*;
+import java.io.OutputStream;
 
 //import org.antlr.v4.runtime.BaseErrorListener;
 //import com.google.common.collect.Iterables;
@@ -37,7 +38,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
+import ostepu.file.fileUtils;
 import ostepu.process.command;
+import ostepu.request.httpAuth;
 
 /**
  *
@@ -50,7 +53,7 @@ public class SQaLibur extends HttpServlet {
      *
      */
     public String[][] restPattern = {
-        {"POST", "/process"}, {"POST", "/compute"},{"POST", "/sql/checksyntax"}, {"POST", "/sql/format"}};
+        {"POST", "/process"}, {"POST", "/compute"}, {"POST", "/sql/checksyntax"}, {"POST", "/sql/format"}};
 
     /**
      *
@@ -71,6 +74,18 @@ public class SQaLibur extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+        /*
+         * OutputStream out = response.getOutputStream();
+         *
+         * // lädt die Anmeldedaten (eventuell für eine httpAuth)
+         * httpAuth.loadLocalAuthData(getServletContext());
+         *
+         * byte[] tmp = fileUtils.getFile(getServletContext(),
+         * "/file/8/b/c/53708c3e69d8a3e340fb15de01b330e2b680e/ds_7.pdf", true,
+         * new httpAuth());
+         *
+         * out.write(tmp); out.close(); response.setStatus(200); return;
+         */
         String a = request.getRequestURI();
         int b = request.getContextPath().length();
         String pathInfo = StringUtils.substring(a, b);

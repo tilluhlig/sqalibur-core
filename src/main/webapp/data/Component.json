@@ -9,73 +9,73 @@
             "name": "postTestcase",
             "target": "SQaLiburInterfaceDBOOP",
             "links": [{
-                "method": "POST",
-                "path": "/testcase"
-            }]
+                    "method": "POST",
+                    "path": "/testcase"
+                }]
         },
         {
             "name": "postMarking",
             "target": "SQaLiburInterfaceLMarking",
             "links": [{
-                "method": "POST",
-                "path": "/marking"
-            }]
+                    "method": "POST",
+                    "path": "/marking"
+                }]
         },
         {
             "name": "getExerciseSheet",
             "target": "SQaLiburInterfaceLExerciseSheet",
             "links": [{
-                "method": "GET",
-                "path": "/exercisesheet/exercisesheet/:sheetid"
-            }]
+                    "method": "GET",
+                    "path": "/exercisesheet/exercisesheet/:sheetid"
+                }]
         },
         {
             "name": "getCourseExerciseSheet",
             "target": "SQaLiburInterfaceLExerciseSheet",
             "links": [{
-                "method": "GET",
-                "path": "/exercisesheet/course/:courseid"
-            }]
+                    "method": "GET",
+                    "path": "/exercisesheet/course/:courseid"
+                }]
         },
         {
             "name": "postPdf",
             "target": "SQaLiburInterfaceFSPdf",
             "links": [{
-                "method": "POST",
-                "path": "/pdf"
-            }]
+                    "method": "POST",
+                    "path": "/pdf"
+                }]
         },
         {
             "name": "postProcess",
             "target": "SQaLiburInterfaceDBProcessList",
             "links": [{
-                "method": "POST",
-                "path": "/process"
-            }]
+                    "method": "POST",
+                    "path": "/process"
+                }]
         },
         {
             "name": "deleteProcess",
             "target": "SQaLiburInterfaceDBProcessList",
             "links": [{
-                "method": "DELETE",
-                "path": "/process/process/:processid"
-            }]
+                    "method": "DELETE",
+                    "path": "/process/process/:processid"
+                }]
         },
         {
             "name": "getProcess",
             "target": "SQaLiburInterfaceDBProcessList",
             "links": [{
-                "method": "GET",
-                "path": "/process/course/:courseid/component/:componentid"
-            }]
+                    "method": "GET",
+                    "path": "/process/course/:courseid/component/:componentid"
+                }]
         },
         {
             "name": "getFile",
             "target": "SQaLiburInterfaceFSBinder",
             "links": [{
-                "method": "GET",
-                "path": "/:folder/:a/:b/:c/:file/:filename"
-            }]
+                    "method": "GET",
+                    "path": "/:folder/:a/:b/:c/:file/:filename"
+                }]
         }
     ],
     "connector": [
@@ -87,15 +87,33 @@
             "name": "request",
             "target": "CHelp",
             "links": [
-                {"path": "/help/:language/extension/SQaLibur/SQaLibur.md"},
-                {"path": "/help/:language/extension/SQaLibur/SQaLiburDesc.md"},
-                {"path": "/help/:language/extension/SQaLibur/SQaLiburA.png"},
-                {"path": "/help/:language/extension/SQaLibur/SQaLiburB.png"},
-                {"path": "/help/:language/extension/SQaLibur/SQaLiburC.png"},
-                {"path": "/help/:language/extension/SQaLibur/SQaLiburD.png"},
-                {"path": "/help/:language/extension/SQaLibur/SQaLiburE.png"},
-                {"path": "/help/:language/extension/SQaLibur/SQaLiburF.png"},
-                {"path": "/help/:language/extension/SQaLibur/SQaLiburG.png"}
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLibur.md"
+                },
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLiburDesc.md"
+                },
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLiburA.png"
+                },
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLiburB.png"
+                },
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLiburC.png"
+                },
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLiburD.png"
+                },
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLiburE.png"
+                },
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLiburF.png"
+                },
+                {
+                    "path": "/help/:language/extension/SQaLibur/SQaLiburG.png"
+                }
             ]
         }
     ]
