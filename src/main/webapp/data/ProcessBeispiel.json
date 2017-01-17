@@ -1,0 +1,49 @@
+{
+    "processId": "3_1",
+    "exercise": {
+        "id": "944",
+        "sheetId": "271",
+        "maxPoints": "2",
+        "type": "1",
+        "link": "1",
+        "bonus": "0",
+        "linkName": "1"
+    },
+    "target": {
+        "id": "3429",
+        "name": "SQaLibur",
+        "address": "http:\/\/localhost:8080\/SQaLibur"
+    },
+    "parameter": "abc cba",
+    "attachment": [{
+            "id": "3_1",
+            "exerciseId": "944",
+            "file": {
+                "fileId": "47391",
+                "displayName": "AbfuellAnlage.aps",
+                "address": "file\/1\/7\/5\/c0dfe840f88aba86dcfe10dd1b44c45cfece7",
+                "timeStamp": "1484605868",
+                "fileSize": "2673",
+                "hash": "175c0dfe840f88aba86dcfe10dd1b44c45cfece7",
+                "mimeType": "text\/plain"
+            }
+        }],
+    "rawSubmission": {
+        "studentId": "6",
+        "exerciseId": "944",
+        "comment": "",
+        "file": {
+            "displayName": "EinsendungA.sql",
+            "timeStamp": 1484607390,
+            "body": {
+                "localRef": "C:\\xampp\\tmp\\php3CCC.tmp",
+                "globalRef":"reference\/7\/b\/5\/5ed1db67f007e3f889fb81f526332d022b10f"
+            }
+        },
+        "accepted": 1,
+        "selectedForGroup": "1",
+        "date": 1484607390,
+        "leaderId": "6",
+        "exerciseName": "1"
+    }
+}
