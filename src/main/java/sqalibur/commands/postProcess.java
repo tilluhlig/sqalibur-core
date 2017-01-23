@@ -21,29 +21,34 @@ import ostepu.structure.component;
 import ostepu.structure.process;
 
 /**
- * Dieser Befehl bearbeitet eingehende Korrekturanfragen (wenn ein Student also etwas einsendet)
+ * Dieser Befehl bearbeitet eingehende Korrekturanfragen (wenn ein Student also
+ * etwas einsendet)
+ *
  * @author Till
  */
 public class postProcess implements command {
+
     @Override
-        public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response)
+    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        
+
         component conf = cconfig.loadConfig(context);
         JsonObject mycomponent = cconfig.loadComponent(context);
-        
+
         String incomingProcessString = IOUtils.toString(request.getInputStream());
         process processObject = (process) process.decode(incomingProcessString);
-        
-        if (processObject == null){
+
+        if (processObject == null) {
             response.setStatus(412);
             out.write("no proper input found");
             return;
         }
-        //processObject.setStatus("201");
+
+        processObject.setStatus("201");
         // ausfüllen
-        //out.write(processObject.encode());
+        out.write(processObject.encode());
         response.setStatus(201);
     }
+
 }
