@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2017 Till Uhlig <till.uhlig@student.uni-halle.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,12 +64,12 @@ public class SQaLibur extends HttpServlet {
      *
      */
     public String[][] restPattern = {
-        {"POST", "/process"}, {"POST", "/compute"}, {"POST", "/sql/checksyntax"}, {"POST", "/sql/format"}};
+        {"POST", "/process"}, {"POST", "/compute"}, {"POST", "/sql/xml/normalize"}};
 
     /**
      *
      */
-    public command[] restCommands = {new sqalibur.commands.postProcess(), null, null, null};
+    public command[] restCommands = {new sqalibur.commands.postProcess(), null, new sqalibur.commands.postXMLNormalize()};
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
