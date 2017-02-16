@@ -61,13 +61,13 @@ import ostepu.request.httpAuth;
 public class SQaLibur extends HttpServlet {
 
     /**
-     *
+     * diese Befehle bieten wir an
      */
     public String[][] restPattern = {
-        {"POST", "/process"}, {"POST", "/compute"}, {"POST", "/sql/xml/normalize"}};
+        {"POST", "/process"}, {"POST", "/compute"}, {"GET", "/sql/xml/normalize"}};
 
     /**
-     *
+     * wenn ein Befehl erkannt wird, sollen diese Aufrufe entsprechend ausgeführt werden
      */
     public command[] restCommands = {new sqalibur.commands.postProcess(), null, new sqalibur.commands.postXMLNormalize()};
 

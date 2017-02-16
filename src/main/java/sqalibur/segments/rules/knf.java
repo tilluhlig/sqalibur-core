@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2017 Till Uhlig <till.uhlig@student.uni-halle.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,18 +16,36 @@
  */
 package sqalibur.segments.rules;
 
-import com.sqalibur.xsltrules.xsltRules;
 import treeNormalizer.rule;
 import treeNormalizer.transformation;
+import treeNormalizer.utils.xsltProcessor;
+import org.jdom.Document;
+import treeNormalizer.utils.treeUsage;
 
 /**
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
-public class knf extends rule{
-    
+public class knf extends rule {
+
     @Override
-    public void perform(transformation transform) {
-    
+    public boolean perform(transformation context) {
+        xsltProcessor processor = new xsltProcessor();
+        processor.setSource(context.getTree());
+        //  processor.setSourceByResource("com/sqalibur/xsltrules/examples/sample.xml");
+        processor.addResourceToScript("com/sqalibur/xsltrules/rules/wurzel.xsl");
+        processor.addResourceToScript("com/sqalibur/xsltrules/rules/deMorgan.xsl");
+        processor.addResourceToScript("com/sqalibur/xsltrules/rules/doppelnegation.xsl");
+        processor.addResourceToScript("com/sqalibur/xsltrules/rules/distributivgesetz.xsl");
+        processor.addResourceToScript("com/sqalibur/xsltrules/rules/saeubern.xsl");
+        processor.addResourceToScript("com/sqalibur/xsltrules/rules/glaetten.xsl");
+        processor.addResourceToScript("com/sqalibur/xsltrules/rules/kopieren.xsl");
+        
+        int oldDocument = treeUsage.getDocumentHash(context.getTree());
+        Document result = processor.transform();
+        int newDocument = treeUsage.getDocumentHash(result);
+        context.setTree(result);
+        return oldDocument!=newDocument;
     }
+
 }

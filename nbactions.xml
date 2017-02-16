@@ -14,9 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<actions>
+--><actions>
         <action>
             <actionName>run</actionName>
             <packagings>
@@ -29,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </goals>
             <properties>
                 <netbeans.deploy>true</netbeans.deploy>
-                <netbeans.deploy.clientUrlPart>/sql</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart>/sql/xml/normalize</netbeans.deploy.clientUrlPart>
             </properties>
         </action>
         <action>
@@ -45,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <properties>
                 <netbeans.deploy.debugmode>true</netbeans.deploy.debugmode>
                 <netbeans.deploy>true</netbeans.deploy>
-                <netbeans.deploy.clientUrlPart>/sql</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart>/sql/xml/normalize</netbeans.deploy.clientUrlPart>
             </properties>
         </action>
         <action>
@@ -61,7 +59,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <properties>
                 <netbeans.deploy>true</netbeans.deploy>
                 <netbeans.deploy.profilemode>true</netbeans.deploy.profilemode>
-                <netbeans.deploy.clientUrlPart>/sql</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart>/sql/xml/normalize</netbeans.deploy.clientUrlPart>
             </properties>
         </action>
     </actions>

@@ -59,6 +59,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>6.0</version>
