@@ -25,14 +25,18 @@ import org.jdom.Document;
 import org.jdom.Element;
 import treeNormalizer.rule;
 import treeNormalizer.transformation;
-import treeNormalizer.utils.treeUsage;
+import treeNormalizer.utils.treeUtilities;
 
 /**
+ * diese Regel sortiert die Kinder von kommutativen Elementen
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 public class sort extends rule {
 
+    /*
+     * hier werden die Muster aufgelistet Label=>Klasse
+     */
     private static final Map<String, String> sortPattern = new HashMap<String, String>() {
         {
             put("+", "binop");
@@ -47,9 +51,9 @@ public class sort extends rule {
     @Override
     public boolean perform(transformation context) {
         Document document = context.getTree();
-        int oldDocument = treeUsage.getDocumentHash(document);
+        int oldDocument = treeUtilities.getDocumentHash(document);
 
-        List<Element> elements = treeUsage.getLeafs(document);
+        List<Element> elements = treeUtilities.getLeafs(document);
 
         for (int i = 0; i < elements.size(); i++) {
 
@@ -57,8 +61,8 @@ public class sort extends rule {
             boolean sortMe = false; // soll sortiert werden?
 
             // nur wer Kinder hat und ein passendes Label besitzt kommt in die engere Auswahl
-            if (element.getChildren().size() > 0 && sortPattern.get(element.getName()) != null) {
-                String requiredClass = sortPattern.get(element.getName());
+            if (element.getChildren().size() > 0 && sortPattern.get(element.getAttributeValue("label")) != null) {
+                String requiredClass = sortPattern.get(element.getAttributeValue("label"));
                 if (element.getAttributeValue("class") == null ? requiredClass == null : element.getAttributeValue("class").equals(requiredClass)) {
                     sortMe = true;
                 }
@@ -66,32 +70,34 @@ public class sort extends rule {
 
             // wenn sortMe == true, dann soll sortiert werden
             if (sortMe) {
-                List<Element> childs = element.getChildren();
+                List<Element> childs = element.removeContent();
                 Collections.sort(childs, new Comparator<Element>() {
+                    
                     @Override
                     public int compare(Element o1, Element o2) {
-                        if (treeUsage.getElementHash(o1, true) == treeUsage.getElementHash(o2, true)) {
+                        if (treeUtilities.getElementHash(o1, true) == treeUtilities.getElementHash(o2, true)) {
                             return 0;
                         }
-                        return treeUsage.getElementHash(o1, true) < treeUsage.getElementHash(o2, true) ? -1 : 1;
+                        return treeUtilities.getElementHash(o1, true) < treeUtilities.getElementHash(o2, true) ? -1 : 1;
                     }
-
                 });
+
                 element.setContent(childs);
             }
 
             // jetzt bekommt dieses Element seine Signatur
-            element.setAttribute("signature", null);
-            treeUsage.getElementHashAsString(element, true);
+            element.removeAttribute("signature");
+            treeUtilities.getElementHashAsString(element, true);
 
             // nun die Väter noch für die Bearbeitung einfügen
             // (es kann nun einen Vater geben)
-            if (!element.isRootElement()) {
+            if (!element.isRootElement() && element.getParent().indexOf(element) == 0) {
                 elements.add(element.getParentElement());
             }
         }
 
-        int newDocument = treeUsage.getDocumentHash(document, true);
+        context.setTree(document);
+        int newDocument = treeUtilities.getDocumentHash(document, true);
         return oldDocument != newDocument;
     }
 

@@ -31,6 +31,7 @@ import ostepu.structure.process;
 import sqalibur.segments.rules.knf;
 import treeNormalizer.rule;
 import treeNormalizer.transformation;
+
 /**
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
@@ -49,17 +50,17 @@ public class postXMLNormalize implements command {
             // diese sollen nun in eine Datenstruktur eingelesen werden
             //// convertXMLToTree
             // nun erfolgt die Normalisierung
-            BufferedReader in;
+            /*BufferedReader in;
             URL url = getClass().getClassLoader().getResource("com/sqalibur/xsltrules/examples/sample.xml");
             in = new BufferedReader(new InputStreamReader(url.openStream()));
-            String res = "";
+            incomingXML = "";
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                res += inputLine;
+                incomingXML += inputLine;
             }
-            in.close();
-            
-            InputStream stream = new ByteArrayInputStream(res.getBytes(StandardCharsets.UTF_8));
+            in.close();*/
+
+            InputStream stream = new ByteArrayInputStream(incomingXML.getBytes(StandardCharsets.UTF_8));
             Document document = new SAXBuilder().build(stream);
 
             rule a = new sqalibur.segments.rules.knf();
@@ -68,7 +69,6 @@ public class postXMLNormalize implements command {
             b.setTree(document);
             a.perform(b);
             a2.perform(b);
-           
 
             out.write("Ausgeben");
             response.setStatus(201);

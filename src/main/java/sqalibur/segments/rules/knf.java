@@ -20,9 +20,10 @@ import treeNormalizer.rule;
 import treeNormalizer.transformation;
 import treeNormalizer.utils.xsltProcessor;
 import org.jdom.Document;
-import treeNormalizer.utils.treeUsage;
+import treeNormalizer.utils.treeUtilities;
 
 /**
+ * diese Regel erzeugt die konjunktive Normalform (unsortiert)
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
@@ -40,12 +41,12 @@ public class knf extends rule {
         processor.addResourceToScript("com/sqalibur/xsltrules/rules/saeubern.xsl");
         processor.addResourceToScript("com/sqalibur/xsltrules/rules/glaetten.xsl");
         processor.addResourceToScript("com/sqalibur/xsltrules/rules/kopieren.xsl");
-        
-        int oldDocument = treeUsage.getDocumentHash(context.getTree());
+
+        int oldDocument = treeUtilities.getDocumentHash(context.getTree());
         Document result = processor.transform();
-        int newDocument = treeUsage.getDocumentHash(result);
+        int newDocument = treeUtilities.getDocumentHash(result);
         context.setTree(result);
-        return oldDocument!=newDocument;
+        return oldDocument != newDocument;
     }
 
 }
