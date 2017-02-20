@@ -52,11 +52,12 @@ public class postSQLNormalize implements command {
         String incomingSQL = IOUtils.toString(request.getInputStream());
         //incomingSQL = "select * from student, abc where (id = 101 or e_mail is null) or id = 102";
         Document sqlDocument = sqlParser.parse(incomingSQL);
-               Calendar cal = Calendar.getInstance();
-               
+        Calendar cal = Calendar.getInstance();
+
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         out.write(xsltProcessor.DocumentToXml(sqlDocument));
         out.write(sdf.format(cal.getTime()));
         response.setStatus(200);
     }
+
 }
