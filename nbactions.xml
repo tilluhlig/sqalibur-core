@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </goals>
             <properties>
                 <netbeans.deploy>true</netbeans.deploy>
-                <netbeans.deploy.clientUrlPart>/sql/xml/normalize</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart>/sql/sql/normalize</netbeans.deploy.clientUrlPart>
             </properties>
         </action>
         <action>
@@ -43,7 +43,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <properties>
                 <netbeans.deploy.debugmode>true</netbeans.deploy.debugmode>
                 <netbeans.deploy>true</netbeans.deploy>
-                <netbeans.deploy.clientUrlPart>/sql/xml/normalize</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart>/sql/sql/normalize</netbeans.deploy.clientUrlPart>
+                <skipTests>true</skipTests>
             </properties>
         </action>
         <action>
@@ -59,7 +60,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <properties>
                 <netbeans.deploy>true</netbeans.deploy>
                 <netbeans.deploy.profilemode>true</netbeans.deploy.profilemode>
-                <netbeans.deploy.clientUrlPart>/sql/xml/normalize</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart>/sql/sql/normalize</netbeans.deploy.clientUrlPart>
+            </properties>
+        </action>
+        <action>
+            <actionName>build</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
             </properties>
         </action>
     </actions>

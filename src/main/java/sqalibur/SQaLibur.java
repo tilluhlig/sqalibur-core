@@ -64,12 +64,28 @@ public class SQaLibur extends HttpServlet {
      * diese Befehle bieten wir an
      */
     public String[][] restPattern = {
-        {"POST", "/process"}, {"POST", "/compute"}, {"POST", "/sql/xml/normalize"}};
+        {"POST", "/process"}, // bearbeitet eine Einsendung eines Studenten
+        {"POST", "/compute"}, // dieser Befehl wird von OSTEPU aufgerufen (damit ich de nächsten Testfall bearbeite)
+        {"POST", "/sql/xml/normalize"}, // normalisiert eine XML Eingabe
+        {"POST", "/sql/sql/normalize"}, // normalisiert eine SQL Eingabe
+        {"POST", "/sql/sql/checkSyntax"}, // prüft eine SQL Eingabe auf Syntaxfehler
+        {"POST", "/sql/sql/checkSemantics"}, // prüft die Semantik der Eingabe
+        {"POST", "/sql/sql/normalizeSyntax"}, // normalisiert die Syntax
+        {"POST", "/sql/sql/normalizeSemantics"}, // normalisiert die Semantik
+        {"POST", "/sql/sql/formatter"}};
 
     /**
-     * wenn ein Befehl erkannt wird, sollen diese Aufrufe entsprechend ausgeführt werden
      */
-    public command[] restCommands = {new sqalibur.commands.postProcess(), null, new sqalibur.commands.postXMLNormalize()};
+    public command[] restCommands = {
+        new sqalibur.commands.postProcess(),
+        null,
+        new sqalibur.commands.postXMLNormalize(),
+        new sqalibur.commands.postSQLNormalize(),
+        null,
+        null,
+        null,
+        null,
+        null};
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
