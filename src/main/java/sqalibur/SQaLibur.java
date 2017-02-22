@@ -101,18 +101,6 @@ public class SQaLibur extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        /*
-         * OutputStream out = response.getOutputStream();
-         *
-         * // lädt die Anmeldedaten (eventuell für eine httpAuth)
-         * httpAuth.loadLocalAuthData(getServletContext());
-         *
-         * byte[] tmp = fileUtils.getFile(getServletContext(),
-         * "/file/8/b/c/53708c3e69d8a3e340fb15de01b330e2b680e/ds_7.pdf", true,
-         * new httpAuth());
-         *
-         * out.write(tmp); out.close(); response.setStatus(200); return;
-         */
         String a = request.getRequestURI();
         int b = request.getContextPath().length();
         String pathInfo = StringUtils.substring(a, b);
@@ -135,7 +123,9 @@ public class SQaLibur extends HttpServlet {
                 }
             }
 
-        } finally {
+        } catch(Exception e){
+            response.sendError(409);
+        }finally {
             out.close();
         }
         response.sendError(409);

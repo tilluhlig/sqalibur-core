@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
+import org.jdom.Document;
 import ostepu.cconfig.cconfig;
 import ostepu.file.fileUtils;
 import ostepu.process.command;
@@ -36,6 +37,10 @@ import ostepu.structure.attachment;
 import ostepu.structure.component;
 import ostepu.structure.file;
 import ostepu.structure.process;
+import sqalibur.sqlParser;
+import treeNormalizer.normalization;
+import treeNormalizer.simpleNormalization.simpleNormalization;
+import treeNormalizer.utils.treeUtilities;
 
 /**
  * Dieser Befehl bearbeitet eingehende Korrekturanfragen (wenn ein Student also
@@ -94,6 +99,13 @@ public class postProcess implements command {
             return;
         }
 
+        if (processObject.getAttachment().size() > 2) {
+            // wir haben zu viele Anhänge
+            response.setStatus(412);
+            out.write("too much attachments ... what's your problem?");
+            return;
+        }
+
         List<attachment> attachments = processObject.getAttachment();
         List<file> attachmentFiles = new ArrayList<file>();
 
@@ -110,7 +122,7 @@ public class postProcess implements command {
         // lädt die Anmeldedaten (eventuell für eine httpAuth)
         httpAuth.loadLocalAuthData(context);
 
-        byte[] submission = fileUtils.getFile(context, submissionFile, true, new httpAuth());
+        byte[] submission = fileUtils.getFile(context, submissionFile, true, new httpAuth()); // er verwendet dazu die zuvor geladenen Anmeldedaten
         if (submission == null) {
             // die Einsendung konnte nicht abgerufen werden
             response.setStatus(409);
@@ -122,7 +134,7 @@ public class postProcess implements command {
         // jetzt wollen wir die Anhänge vom Hauptsystem einsammeln
         List<String> attachmentData = new ArrayList<String>();
         for (file ff : attachmentFiles) {
-            byte[] attachment = fileUtils.getFile(context, ff, true, new httpAuth());
+            byte[] attachment = fileUtils.getFile(context, ff, true, new httpAuth()); // er verwendet dazu die zuvor geladenen Anmeldedaten
             if (attachment == null) {
                 // der Anhang konnte nicht abgerufen werden
                 response.setStatus(409);
@@ -133,8 +145,46 @@ public class postProcess implements command {
         }
 
         // nun besitzen wir die Einsendung und alle Anhänge
+        // sodass wir die Normalisierung initialisieren können
+        normalization normalization = new simpleNormalization();
+        Document submissionDocument = sqlParser.parse(submissionData);
+        normalization.setSubmission(submissionDocument);
+
+        List<Document> attachmentDocuments = new ArrayList<Document>();
+        for (String att : attachmentData) {
+            attachmentDocuments.add(sqlParser.parse(att));
+        }
+
+        if (attachmentDocuments.size() == 1) {
+            // wenn wir nur einen Anhang haben, dann wird er als Musterlösung verwendet
+            normalization.setSolution(attachmentDocuments.get(0));
+        } else if (attachmentDocuments.size() == 2) {
+            // jetzt müssen wir herausfinden, welche die Musterlösung und welche der Kontext ist
+            String typeA = treeUtilities.getQueryType(attachmentDocuments.get(0));
+            String typeB = treeUtilities.getQueryType(attachmentDocuments.get(1));
+            if (typeA == "CreateTable" && typeB != "CreateTable") {
+                normalization.setContext(attachmentDocuments.get(0));
+                normalization.setSolution(attachmentDocuments.get(1));
+            } else if (typeB == "CreateTable" && typeA != "CreateTable") {
+                normalization.setContext(attachmentDocuments.get(1));
+                normalization.setSolution(attachmentDocuments.get(0));
+            } else {
+                response.setStatus(409);
+                out.write("can't classify the attachments as solution and context (i need a CreateTable and another query type)");
+                return;
+            }
+        } else {
+            // wieso haben wir mehr als 2 Anhänge???
+            response.setStatus(409);
+            out.write("too much attachments, after reading all attachments");
+            return;
+        }
+
+        // führt die Normalisierung aus
+        normalization.perform();
         
-        
+        boolean equivalence = normalization.equivalent();
+
         processObject.setStatus("201");
         out.write(processObject.encode());
         response.setStatus(201);

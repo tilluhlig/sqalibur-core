@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.Select;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -31,8 +32,8 @@ public class sqlParser {
         document.setRootElement(root);
         try {
 
-            Select a = (Select) CCJSqlParserUtil.parse(sql);
-            visitNode(root, a.getSelectBody());
+            Statement a = CCJSqlParserUtil.parse(sql);
+            visitNode(root, a);
         } catch (JSQLParserException ex) {
             Logger.getLogger(sqlParser.class.getName()).log(Level.SEVERE, null, ex);
         }
