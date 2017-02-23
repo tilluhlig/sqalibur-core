@@ -6,6 +6,7 @@
 package sqalibur;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +14,7 @@ import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.Statements;
 import net.sf.jsqlparser.statement.select.Select;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -38,6 +40,26 @@ public class sqlParser {
             Logger.getLogger(sqlParser.class.getName()).log(Level.SEVERE, null, ex);
         }
         return document;
+    }
+
+    public static List<Document> parseStatements(String sql) {
+        List<Document> documents = new ArrayList<Document>();
+
+        try {
+            Statements b = CCJSqlParserUtil.parseStatements(sql);
+            List<Statement> q = b.getStatements();
+
+            for (Statement a : q) {
+                Element root = new Element("root");
+                Document document = new Document();
+                document.setRootElement(root);
+                visitNode(root, a);
+                documents.add(document);
+            }
+        } catch (JSQLParserException ex) {
+            Logger.getLogger(sqlParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return documents;
     }
 
     public static void visitNode(Element parent, net.sf.jsqlparser.Element q) {
