@@ -36,6 +36,7 @@ import ostepu.request.httpAuth;
 import ostepu.structure.attachment;
 import ostepu.structure.component;
 import ostepu.structure.file;
+import ostepu.structure.marking;
 import ostepu.structure.process;
 import sqalibur.sqlParser;
 import treeNormalizer.normalization;
@@ -182,8 +183,17 @@ public class postProcess implements command {
 
         // führt die Normalisierung aus
         normalization.perform();
-        
+
         boolean equivalence = normalization.equivalent();
+
+        marking markingObject = new marking();
+        file markingFile = new file();
+        markingFile.setDisplayName("Bericht.txt");
+        markingFile.setBody(fileUtils.encodeBase64("einsendung jkfsnsa jdkas hjds ak"));
+        markingObject.setFile(markingFile);
+        markingObject.setPoints(processObject.getExercise().getMaxPoints());
+        markingObject.setStatus(marking.AUTOMATISCH_STATUS);
+        processObject.setMarking(markingObject);
 
         processObject.setStatus("201");
         out.write(processObject.encode());

@@ -128,7 +128,6 @@ public class SQaLibur extends HttpServlet {
         }finally {
             out.close();
         }
-        response.sendError(409);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
