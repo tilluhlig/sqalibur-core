@@ -50,7 +50,7 @@ public class postSQLNormalize implements command {
         PrintWriter out = response.getWriter();
         // die Eingabe ist eine XML Datenstruktur
         String incomingSQL = IOUtils.toString(request.getInputStream());
-        //incomingSQL = "select * from student, abc where (id = 101 or e_mail is null) or id = 102";
+        incomingSQL = "select first, last from student, abc where (id = 101 or e_mail is null) or id = 102";
         Document sqlDocument = sqlParser.parse(incomingSQL);
         Calendar cal = Calendar.getInstance();
 

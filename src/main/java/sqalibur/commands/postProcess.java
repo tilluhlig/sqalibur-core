@@ -189,11 +189,14 @@ public class postProcess implements command {
         marking markingObject = new marking();
         file markingFile = new file();
         markingFile.setDisplayName("Bericht.txt");
-        markingFile.setBody(fileUtils.encodeBase64("einsendung jkfsnsa jdkas hjds ak"));
+        markingFile.setBody(fileUtils.encodeBase64("Ihre Einsendung ist nicht aequivalent zur Musterloesung!!!"));
         markingObject.setFile(markingFile);
         markingObject.setPoints(processObject.getExercise().getMaxPoints());
         markingObject.setStatus(marking.AUTOMATISCH_STATUS);
         processObject.setMarking(markingObject);
+        
+        processObject.setSubmission(processObject.getRawSubmission());
+        processObject.setMessages(new String[]{"Die Einsendung wurde durch SQaLibur bewertet."});
 
         processObject.setStatus("201");
         out.write(processObject.encode());

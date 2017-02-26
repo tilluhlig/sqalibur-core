@@ -67,7 +67,7 @@ public class SQaLibur extends HttpServlet {
         {"POST", "/process"}, // bearbeitet eine Einsendung eines Studenten
         {"POST", "/compute"}, // dieser Befehl wird von OSTEPU aufgerufen (damit ich de nächsten Testfall bearbeite)
         {"POST", "/sql/xml/normalize"}, // normalisiert eine XML Eingabe
-        {"POST", "/sql/sql/normalize"}, // normalisiert eine SQL Eingabe
+        {"GET", "/sql/sql/normalize"}, // normalisiert eine SQL Eingabe
         {"POST", "/sql/sql/checkSyntax"}, // prüft eine SQL Eingabe auf Syntaxfehler
         {"POST", "/sql/sql/checkSemantics"}, // prüft die Semantik der Eingabe
         {"POST", "/sql/sql/normalizeSyntax"}, // normalisiert die Syntax

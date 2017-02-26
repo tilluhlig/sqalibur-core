@@ -60,20 +60,20 @@ public class sortTest {
     
     @Test
     public void testPerform2() throws JDOMException {
-        run("<root><node label=\"AND\" class=\"binop\"><node label=\"1\"/><node label=\"2\"/><node label=\"3\"/></node></root>"
-                ,"{root_{node_AND_binop_{node_1}{node_2}{node_3}}}");
+        run("<root><node class=\"AndExpression\"><node label=\"1\"/><node label=\"2\"/><node label=\"3\"/></node></root>"
+                ,"{root_{node_AndExpression_{node_1}{node_2}{node_3}}}");
     }
     
     @Test
     public void testPerform3() throws JDOMException {
-        run("<root><node label=\"AND\" class=\"binop\"><node label=\"3\"/><node label=\"1\"/><node label=\"2\"/></node></root>"
-                ,"{root_{node_AND_binop_{node_1}{node_2}{node_3}}}");
+        run("<root><node class=\"AndExpression\"><node label=\"3\"/><node label=\"1\"/><node label=\"2\"/></node></root>"
+                ,"{root_{node_AndExpression_{node_1}{node_2}{node_3}}}");
     }
     
     @Test
     public void testPerform4() throws JDOMException {
-        run("<root><node label=\"AND\" class=\"binop\"><node label=\"1\"/><node label=\"OR\" class=\"binop\"><node label=\"2\"/><node label=\"4\"/></node><node label=\"3\"/></node></root>"
-                ,"{root_{node_AND_binop_{node_OR_binop_{node_2}{node_4}}{node_1}{node_3}}}");
+        run("<root><node class=\"AndExpression\"><node label=\"1\"/><node class=\"OrExpression\"><node label=\"2\"/><node label=\"4\"/></node><node label=\"3\"/></node></root>"
+                ,"{root_{node_AndExpression_{node_OrExpression_{node_2}{node_4}}{node_1}{node_3}}}");
     }
     
     private void run(String input, String expected) throws JDOMException{

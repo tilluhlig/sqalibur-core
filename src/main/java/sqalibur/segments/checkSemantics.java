@@ -22,13 +22,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ostepu.process.command;
-import treeNormalizer.segment;
+import treeNormalizer.ruleSet;
 
 /**
  *
  * @author Till
  */
-public class checkSemantics extends segment implements command{
+public class checkSemantics implements command{
 
     @Override
     public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {

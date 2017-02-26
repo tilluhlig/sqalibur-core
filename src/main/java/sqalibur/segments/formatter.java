@@ -16,10 +16,23 @@
  */
 package sqalibur.segments;
 
+import java.io.IOException;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import ostepu.process.command;
+import treeNormalizer.ruleSet;
+
 /**
  *
  * @author Till
  */
-public class formatter {
+public class formatter implements command{
+
+    @Override
+    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

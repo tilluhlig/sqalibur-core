@@ -35,15 +35,20 @@ import treeNormalizer.utils.treeUtilities;
 public class sort extends rule {
 
     /*
-     * hier werden die Muster aufgelistet Label=>Klasse
+     * hier werden die Muster aufgelistet myClass=>[myLabel, parentClass,
+     * parentLabel], [] = nicht belegt
      */
-    private static final Map<String, String> sortPattern = new HashMap<String, String>() {
+    private static final Map<String, String[]> sortPattern = new HashMap<String, String[]>() {
         {
-            put("+", "binop");
-            put("*", "binop");
-            put("AND", "binop");
-            put("OR", "binop");
-            put("SELECT", "block");
+            put("OrExpression", new String[]{});
+            put("AndExpression", new String[]{});
+            put("Addition", new String[]{});
+            put("Concat", new String[]{});
+            put("Multiplication", new String[]{});
+            put("BitwiseAnd", new String[]{});
+            put("BitwiseOr", new String[]{});
+            put("BitwiseXor", new String[]{});
+            put("ElementList", new String[]{"selectList", "PlainSelect", null});
         }
 
     };
@@ -61,10 +66,16 @@ public class sort extends rule {
             boolean sortMe = false; // soll sortiert werden?
 
             // nur wer Kinder hat und ein passendes Label besitzt kommt in die engere Auswahl
-            if (element.getChildren().size() > 0 && sortPattern.get(element.getAttributeValue("label")) != null) {
-                String requiredClass = sortPattern.get(element.getAttributeValue("label"));
-                if (element.getAttributeValue("class") == null ? requiredClass == null : element.getAttributeValue("class").equals(requiredClass)) {
+            if (element.getChildren().size() > 0 && sortPattern.get(element.getAttributeValue("class")) != null) {
+                String requiredSubClass[] = sortPattern.get(element.getAttributeValue("class"));
+                if (requiredSubClass.length==0) {
                     sortMe = true;
+                } else if (!element.isRootElement() && (requiredSubClass[0] == null || element.getAttributeValue("label") == requiredSubClass[0])) {
+                    if (requiredSubClass[1] == null || element.getParentElement().getAttributeValue("class") == requiredSubClass[1]) {
+                        if (requiredSubClass[2] == null || element.getParentElement().getAttributeValue("label") == requiredSubClass[2]) {
+                            sortMe = true;
+                        }
+                    }
                 }
             }
 
@@ -72,7 +83,7 @@ public class sort extends rule {
             if (sortMe) {
                 List<Element> childs = element.removeContent();
                 Collections.sort(childs, new Comparator<Element>() {
-                    
+
                     @Override
                     public int compare(Element o1, Element o2) {
                         if (treeUtilities.getElementHash(o1, true) == treeUtilities.getElementHash(o2, true)) {
@@ -80,6 +91,7 @@ public class sort extends rule {
                         }
                         return treeUtilities.getElementHash(o1, true) < treeUtilities.getElementHash(o2, true) ? -1 : 1;
                     }
+
                 });
 
                 element.setContent(childs);

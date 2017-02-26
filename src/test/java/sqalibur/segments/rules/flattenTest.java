@@ -45,8 +45,8 @@ public class flattenTest {
      */
     @Test
     public void testPerform() throws JDOMException {
-        run("<root><node label=\"AND\" class=\"binop\"><node label=\"3\"/><node label=\"AND\" class=\"binop\"><node label=\"1\"/><node label=\"2\"/></node></node></root>",
-                "{root_{node_AND_binop_{node_3}{node_1}{node_2}}}");
+        run("<root><node class=\"AndExpression\"><node label=\"3\"/><node class=\"AndExpression\"><node label=\"1\"/><node label=\"2\"/></node></node></root>",
+                "{root_{node_AndExpression_{node_3}{node_1}{node_2}}}");
     }
 
     /**
@@ -54,8 +54,8 @@ public class flattenTest {
      */
     @Test
     public void testPerform2() throws JDOMException {
-        run("<root><node label=\"AND\" class=\"binop\"><node label=\"3\"/><node label=\"OR\" class=\"binop\"><node label=\"1\"/><node label=\"2\"/></node></node></root>",
-                "{root_{node_AND_binop_{node_3}{node_OR_binop_{node_1}{node_2}}}}");
+        run("<root><node class=\"AndExpression\"><node label=\"3\"/><node class=\"OrExpression\"><node label=\"1\"/><node label=\"2\"/></node></node></root>",
+                "{root_{node_AndExpression_{node_3}{node_OrExpression_{node_1}{node_2}}}}");
     }
 
     /**
@@ -63,8 +63,8 @@ public class flattenTest {
      */
     @Test
     public void testPerform3() throws JDOMException {
-        run("<root><node label=\"AND\" class=\"binop\"><node label=\"3\"/><node label=\"OR\" class=\"binop\"><node label=\"AND\" class=\"binop\"><node label=\"1\"/><node label=\"4\"/></node><node label=\"2\"/></node></node></root>",
-                "{root_{node_AND_binop_{node_3}{node_OR_binop_{node_AND_binop_{node_1}{node_4}}{node_2}}}}");
+        run("<root><node class=\"AndExpression\"><node label=\"3\"/><node class=\"OrExpression\"><node class=\"AndExpression\"><node label=\"1\"/><node label=\"4\"/></node><node label=\"2\"/></node></node></root>",
+                "{root_{node_AndExpression_{node_3}{node_OrExpression_{node_AndExpression_{node_1}{node_4}}{node_2}}}}");
     }
 
     /**
