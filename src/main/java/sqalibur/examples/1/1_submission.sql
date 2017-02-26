@@ -1,3 +1,3 @@
-select first, last
+select last, first
 from students
-where e_mail is null or id = 102
+where e_mail is null or id = 101

@@ -71,8 +71,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <goals>
                 <goal>install</goal>
             </goals>
-            <properties>
-                <skipTests>true</skipTests>
-            </properties>
         </action>
     </actions>

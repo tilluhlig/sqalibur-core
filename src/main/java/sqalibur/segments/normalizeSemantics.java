@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ostepu.process.command;
 import treeNormalizer.ruleSet;
+import treeNormalizer.transformation;
 
 /**
  *
@@ -33,6 +34,15 @@ public class normalizeSemantics extends ruleSet implements command {
     @Override
     public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static void initRuleSet() {
+
+    }
+
+    public boolean perform(transformation transform) {
+        initRuleSet();
+        return super.perform(transform);
     }
 
 }

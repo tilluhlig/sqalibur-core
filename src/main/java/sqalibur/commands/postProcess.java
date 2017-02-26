@@ -38,6 +38,8 @@ import ostepu.structure.component;
 import ostepu.structure.file;
 import ostepu.structure.marking;
 import ostepu.structure.process;
+import sqalibur.segments.normalizeSyntax;
+import sqalibur.segments.normalizeSemantics;
 import sqalibur.sqlParser;
 import treeNormalizer.normalization;
 import treeNormalizer.simpleNormalization.simpleNormalization;
@@ -61,10 +63,9 @@ public class postProcess implements command {
 
         String incomingProcessString = IOUtils.toString(request.getInputStream());
 
-        if (incomingProcessString == "") {
+        if ("".equals(incomingProcessString)) {
             // es wurden keine Daten übermittelt
-            response.setStatus(412);
-            out.write("no input found");
+            setResult(out, response, 412, new process(), "412", "SQaLibur: no input found");
             return;
         }
 
@@ -72,15 +73,13 @@ public class postProcess implements command {
 
         if (processObject == null) {
             // es wurden keine vernünftigen Daten übermittelt
-            response.setStatus(412);
-            out.write("no proper input found");
+            setResult(out, response, 412, new process(), "412", "SQaLibur: no proper input found");
             return;
         }
 
         if (processObject.getRawSubmission() == null) {
             // es wurde keine Einsendung gefunden
-            response.setStatus(412);
-            out.write("no submission found");
+            setResult(out, response, 412, processObject, "412", "SQaLibur: no submission found");
             return;
         }
 
@@ -88,22 +87,20 @@ public class postProcess implements command {
 
         if (submissionFile == null) {
             // es gibt zu der Einsendung keine Datei
-            response.setStatus(412);
-            out.write("found no file object in submission");
+            setResult(out, response, 412, processObject, "412", "SQaLibur: found no file object in submission");
             return;
         }
 
         if (processObject.getAttachment() == null || processObject.getAttachment().size() == 0) {
             // es wurde kein Anhang gefunden (ist OK)
             // dann müssen wir auch nichts prüfen
-            response.setStatus(201);
+            setResult(out, response, 201, processObject, "201", "");
             return;
         }
 
         if (processObject.getAttachment().size() > 2) {
             // wir haben zu viele Anhänge
-            response.setStatus(412);
-            out.write("too much attachments ... what's your problem?");
+            setResult(out, response, 412, processObject, "412", "SQaLibur: too much attachments ... what's your problem?");
             return;
         }
 
@@ -113,8 +110,7 @@ public class postProcess implements command {
         for (attachment ff : attachments) {
             if (ff.getFile() == null) {
                 // eine der Anhänge hat keinen gültigen Dateieintrag
-                response.setStatus(412);
-                out.write("missing file in attachment object");
+                setResult(out, response, 412, processObject, "412", "SQaLibur: missing file in attachment object");
                 return;
             }
             attachmentFiles.add(ff.getFile());
@@ -126,8 +122,7 @@ public class postProcess implements command {
         byte[] submission = fileUtils.getFile(context, submissionFile, true, new httpAuth()); // er verwendet dazu die zuvor geladenen Anmeldedaten
         if (submission == null) {
             // die Einsendung konnte nicht abgerufen werden
-            response.setStatus(409);
-            out.write("can't receive the submission from main system");
+            setResult(out, response, 409, processObject, "409", "SQaLibur: can't receive the submission from main system");
             return;
         }
         String submissionData = new String(submission);
@@ -138,8 +133,7 @@ public class postProcess implements command {
             byte[] attachment = fileUtils.getFile(context, ff, true, new httpAuth()); // er verwendet dazu die zuvor geladenen Anmeldedaten
             if (attachment == null) {
                 // der Anhang konnte nicht abgerufen werden
-                response.setStatus(409);
-                out.write("can't receive the attachment from main system");
+                setResult(out, response, 409, processObject, "409", "SQaLibur: can't receive the attachment from main system");
                 return;
             }
             attachmentData.add(new String(attachment));
@@ -170,16 +164,18 @@ public class postProcess implements command {
                 normalization.setContext(attachmentDocuments.get(1));
                 normalization.setSolution(attachmentDocuments.get(0));
             } else {
-                response.setStatus(409);
-                out.write("can't classify the attachments as solution and context (i need a CreateTable and another query type)");
+                setResult(out, response, 409, processObject, "409", "SQaLibur: can't classify the attachments as solution and context (i need a CreateTable and another query type)");
                 return;
             }
         } else {
             // wieso haben wir mehr als 2 Anhänge???
-            response.setStatus(409);
-            out.write("too much attachments, after reading all attachments");
+            setResult(out, response, 409, processObject, "409", "SQaLibur: too much attachments, after reading all attachments");
             return;
         }
+
+        // jetzt werden die Regeln hinzugefügt
+        normalization.addRule(new normalizeSyntax());
+        normalization.addRule(new normalizeSemantics());
 
         // führt die Normalisierung aus
         normalization.perform();
@@ -187,20 +183,40 @@ public class postProcess implements command {
         boolean equivalence = normalization.equivalent();
 
         marking markingObject = new marking();
+
+        // wir erzeugen hier eine Korrekturdatei
         file markingFile = new file();
         markingFile.setDisplayName("Bericht.txt");
-        markingFile.setBody(fileUtils.encodeBase64("Ihre Einsendung ist nicht aequivalent zur Musterloesung!!!"));
         markingObject.setFile(markingFile);
-        markingObject.setPoints(processObject.getExercise().getMaxPoints());
+
+        if (equivalence) {
+            // die Einsendung und die Musterlösung sind äquivalent
+            markingObject.setPoints(processObject.getExercise().getMaxPoints());
+            markingFile.setBody(fileUtils.encodeBase64("Die Einsendung ist aequivalent zur Musterloesung."));
+        } else {
+            // ich kann nicht sagen, ob sie äquivalent sind oder nicht
+            markingObject.setPoints("0");
+            markingFile.setBody(fileUtils.encodeBase64("Die Äquivalenz konnte nicht nachgewiesen werden."));
+        }
+
         markingObject.setStatus(marking.AUTOMATISCH_STATUS);
+
+        // das neue Korrekturobjekt muss nun noch zugewiesen werden
         processObject.setMarking(markingObject);
-        
+
         processObject.setSubmission(processObject.getRawSubmission());
-        processObject.setMessages(new String[]{"Die Einsendung wurde durch SQaLibur bewertet."});
+        processObject.setMessages(new String[]{"Die Einsendung wurde durch SQaLibur beurteilt."});
 
         processObject.setStatus("201");
         out.write(processObject.encode());
         response.setStatus(201);
+    }
+
+    public void setResult(PrintWriter out, HttpServletResponse response, int responseStatus, process processObject, String Status, String Message) {
+        processObject.setMessages(new String[]{Message});
+        processObject.setStatus(Status);
+        response.setStatus(responseStatus);
+        out.write(processObject.encode());
     }
 
 }

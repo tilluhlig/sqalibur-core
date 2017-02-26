@@ -17,11 +17,14 @@
 package sqalibur.segments;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ostepu.process.command;
+import treeNormalizer.rule;
 import treeNormalizer.ruleSet;
 import treeNormalizer.transformation;
 
@@ -35,18 +38,24 @@ public class normalizeSyntax extends ruleSet implements command {
     public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    private static void initRuleSet(){
-        
+
+    private static List<rule> myRules = null;
+
+    private static List<rule> initRuleSet() {
+        // wer auch immer diese Regelsammlung nutzen will, soll sie nur 
+        // einmal initialisieren
+        if (myRules == null) {
+            myRules = new ArrayList<rule>();
+            myRules.add(new sqalibur.segments.rules.knf());
+            myRules.add(new sqalibur.segments.rules.sort());
+        }
+        return myRules;
     }
-    
+
+    @Override
     public boolean perform(transformation transform) {
-        initRuleSet();
-        return false;
+        this.rules = initRuleSet();
+        return super.perform(transform);
     }
-    
-    public static boolean performRules(transformation context){
-        normalizeSyntax tmp = new normalizeSyntax();
-        return tmp.perform(context);
-    }
+
 }
