@@ -168,7 +168,7 @@ public class postProcess implements command {
                 return;
             }
         } else {
-            // wieso haben wir mehr als 2 Anhänge???
+            // wieso haben wir jetzt mehr als 2 Anhänge???
             setResult(out, response, 409, processObject, "409", "SQaLibur: too much attachments, after reading all attachments");
             return;
         }
@@ -193,23 +193,19 @@ public class postProcess implements command {
             // die Einsendung und die Musterlösung sind äquivalent
             markingObject.setPoints(processObject.getExercise().getMaxPoints());
             markingFile.setBody(fileUtils.encodeBase64("Die Einsendung ist aequivalent zur Musterloesung."));
+            markingObject.setStatus(marking.AUTOMATISCH_STATUS);
         } else {
             // ich kann nicht sagen, ob sie äquivalent sind oder nicht
             markingObject.setPoints("0");
-            markingFile.setBody(fileUtils.encodeBase64("Die Äquivalenz konnte nicht nachgewiesen werden."));
+            markingFile.setBody(fileUtils.encodeBase64("Die Aequivalenz konnte nicht nachgewiesen werden."));
+            markingObject.setStatus(marking.UNKORRIGIERT_STATUS);
         }
-
-        markingObject.setStatus(marking.AUTOMATISCH_STATUS);
 
         // das neue Korrekturobjekt muss nun noch zugewiesen werden
         processObject.setMarking(markingObject);
-
         processObject.setSubmission(processObject.getRawSubmission());
-        processObject.setMessages(new String[]{"Die Einsendung wurde durch SQaLibur beurteilt."});
 
-        processObject.setStatus("201");
-        out.write(processObject.encode());
-        response.setStatus(201);
+        setResult(out, response, 201, processObject, "201", "Die Einsendung wurde durch SQaLibur beurteilt.");
     }
 
     public void setResult(PrintWriter out, HttpServletResponse response, int responseStatus, process processObject, String Status, String Message) {

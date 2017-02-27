@@ -70,9 +70,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.facebook.presto/presto-parser -->
-
-
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
@@ -80,8 +77,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>asdasd</groupId>
-            <artifactId>asdasfasf</artifactId>
+            <groupId>com.sqalibur</groupId>
+            <artifactId>sqlParser</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
