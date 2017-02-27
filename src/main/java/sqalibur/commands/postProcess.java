@@ -197,8 +197,10 @@ public class postProcess implements command {
         } else {
             // ich kann nicht sagen, ob sie äquivalent sind oder nicht
             markingObject.setPoints("0");
-            markingFile.setBody(fileUtils.encodeBase64("Die Aequivalenz konnte nicht nachgewiesen werden."));
-            markingObject.setStatus(marking.UNKORRIGIERT_STATUS);
+            String submissionText = treeUtilities.printDocument(normalization.getSubmission().getTree());
+            String solutionText = treeUtilities.printDocument(normalization.getSolution().getTree());
+            markingFile.setBody(fileUtils.encodeBase64("Die Aequivalenz konnte nicht nachgewiesen werden.\n\nEinsendung:\n" + submissionText + "\n\nMusterlösung:\n" + solutionText));
+            markingObject.setStatus(marking.VORLAEUFIG_STATUS);
         }
 
         // das neue Korrekturobjekt muss nun noch zugewiesen werden
