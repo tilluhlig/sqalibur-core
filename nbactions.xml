@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <properties>
                 <netbeans.deploy>true</netbeans.deploy>
                 <netbeans.deploy.clientUrlPart>/sql/sql/normalize</netbeans.deploy.clientUrlPart>
+                <skipTests>true</skipTests>
             </properties>
         </action>
         <action>
@@ -71,5 +72,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <goals>
                 <goal>install</goal>
             </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
         </action>
     </actions>

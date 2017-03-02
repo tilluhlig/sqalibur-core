@@ -199,7 +199,7 @@ public class postProcess implements command {
             markingObject.setPoints("0");
             String submissionText = treeUtilities.printDocument(normalization.getSubmission().getTree());
             String solutionText = treeUtilities.printDocument(normalization.getSolution().getTree());
-            markingFile.setBody(fileUtils.encodeBase64("Die Aequivalenz konnte nicht nachgewiesen werden.\n\nEinsendung:\n" + submissionText + "\n\nMusterlösung:\n" + solutionText));
+            markingFile.setBody(fileUtils.encodeBase64("Die Aequivalenz konnte nicht nachgewiesen werden.\n\nEinsendung:\n" + submissionText + "\n\nMusterloesung:\n" + solutionText));
             markingObject.setStatus(marking.VORLAEUFIG_STATUS);
         }
 

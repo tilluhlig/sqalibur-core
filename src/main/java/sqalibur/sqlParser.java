@@ -16,6 +16,7 @@ import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.Statements;
 import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.util.deparser.StatementDeParser;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -35,7 +36,14 @@ public class sqlParser {
         try {
 
             Statement a = CCJSqlParserUtil.parse(sql);
-            visitNode(root, a);
+         //   StringBuilder b = new StringBuilder();
+         //   StatementDeParser c = new StatementDeParser(b);
+          //  if (a instanceof Select) {
+          //      c.visit((Select) a);
+          //  }
+           // StringBuilder q = c.getBuffer();
+            JSQLToDocument m = new JSQLToDocument();
+            root.addContent(m.visit(a));
         } catch (JSQLParserException ex) {
             Logger.getLogger(sqlParser.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,36 +61,14 @@ public class sqlParser {
                 Element root = new Element("root");
                 Document document = new Document();
                 document.setRootElement(root);
-                visitNode(root, a);
+                JSQLToDocument m = new JSQLToDocument();
+                root.addContent(m.visit(a));
                 documents.add(document);
             }
         } catch (JSQLParserException ex) {
             Logger.getLogger(sqlParser.class.getName()).log(Level.SEVERE, null, ex);
         }
         return documents;
-    }
-
-    public static void visitNode(Element parent, net.sf.jsqlparser.Element q) {
-
-        Element newElement = new Element("node");
-        parent.addContent(newElement);
-        newElement.setAttribute("class", q.getClass().getSimpleName());
-        if (q.getStringValue() != null) {
-            newElement.setAttribute("label", q.getStringValue());
-        }
-
-        net.sf.jsqlparser.Element[] childs = q.getChildren();
-        if (childs == null) {
-            return;
-        }
-        for (net.sf.jsqlparser.Element q3 : childs) {
-            if (q3 == null) {
-                Element newElement2 = new Element("node");
-                newElement.addContent(newElement2);
-            } else {
-                visitNode(newElement, q3);
-            }
-        }
     }
 
 }
