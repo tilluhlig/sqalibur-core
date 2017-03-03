@@ -307,7 +307,7 @@ public class JSQLToDocument {
         if (a == null) {
             return null;
         }
-        return newElement("", new Element[]{visit(a.getLeftExpression()), visit(a.getRightExpression())}, null);
+        return newElement(a.getClass().getSimpleName(), new Element[]{visit(a.getLeftExpression()), visit(a.getRightExpression())}, null);
     }
 
     public Element visit(Alias a) {

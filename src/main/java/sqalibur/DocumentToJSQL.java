@@ -66,7 +66,7 @@ import org.jdom.Element;
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
-public class DocumentToSQL {
+public class DocumentToJSQL {
 
 
     /*
@@ -116,6 +116,10 @@ public class DocumentToSQL {
         String elemLabel = a.getAttributeValue("label");
         List<Element> childs = a.getChildren();
 
+        if (elemClass == null) {
+            return null;
+        }
+
         switch (elemClass) {
             case "Addition":
                 return visit(new Addition(), a);
@@ -138,9 +142,11 @@ public class DocumentToSQL {
             case "AndExpression":
                 return new AndExpression((Expression) visit(childs.get(0)), (Expression) visit(childs.get(1)));
             case "OrExpression":
-                return new OrExpression((Expression) visit(childs.get(0)), (Expression) visit(childs.get(1)));
+                OrExpression tmp51 = new OrExpression((Expression) visit(childs.get(0)), (Expression) visit(childs.get(1)));
+                return tmp51;
             case "EqualsTo":
-                return visit(new EqualsTo(), a);
+                EqualsTo tmp52 = (EqualsTo) visit(new EqualsTo(), a);
+                return tmp52;
             case "GreaterThan":
                 return visit(new GreaterThan(), a);
             case "GreaterThanEquals":
@@ -263,13 +269,17 @@ public class DocumentToSQL {
                 tmp6.setComment(elemLabel);
                 return tmp6;
             case "Parenthesis":
-                return new Parenthesis((Expression) visit(childs.get(0)));
+                if (childs.size()<1)return new Parenthesis(null);
+                Parenthesis tmp50 = new Parenthesis((Expression) visit(childs.get(0)));
+                return tmp50;
             case "RowConstructor":
+                if (childs.size()<1) return new RowConstructor();
                 RowConstructor tmp29 = new RowConstructor();
                 tmp29.setExprList((ExpressionList) visit(childs.get(0)));
                 tmp29.setName(elemLabel);
                 return tmp29;
             case "SignedExpression":
+                if (childs.size()<1) return new SignedExpression(elemLabel.charAt(0), null);
                 SignedExpression tmp30 = new SignedExpression(elemLabel.charAt(0), (Expression) visit(childs.get(0)));
                 return tmp30;
             case "StringValue":
@@ -285,6 +295,7 @@ public class DocumentToSQL {
                 tmp10.setName(elemLabel);
                 return tmp10;
             case "WhenClause":
+                if (childs.size()<2) return new WhenClause();
                 WhenClause tmp31 = new WhenClause();
                 tmp31.setWhenExpression((Expression) visit(childs.get(0)));
                 tmp31.setThenExpression((Expression) visit(childs.get(1)));
@@ -293,6 +304,7 @@ public class DocumentToSQL {
                 //return newElement(a.getClass().getSimpleName(), new Element[]{visit(a.getExprList()), visit(orderByList)}, a.getName());
                 return null;
             case "Between":
+                if (childs.size()<3) return new Between();
                 Between tmp32 = new Between();
                 tmp32.setLeftExpression((Expression) visit(childs.get(0)));
                 tmp32.setBetweenExpressionStart((Expression) visit(childs.get(1)));
@@ -308,8 +320,9 @@ public class DocumentToSQL {
                 // return newElement(a.getClass().getSimpleName(), new Element[]{visit(a.getLeftExpression()), visit(a.getLeftItemsList()), visit(a.getRightItemsList())}, null);
                 return null;
             case "IsNullExpression":
+                if (childs.size()<1) return new IsNullExpression();
                 IsNullExpression tmp12 = new IsNullExpression();
-                tmp12.setLeftExpression((IsNullExpression) visit(childs.get(0)));
+                tmp12.setLeftExpression((Expression) visit(childs.get(0)));
                 return tmp12;
             case "MultiExpressionList":
                 MultiExpressionList tmp33 = new MultiExpressionList();
@@ -318,12 +331,14 @@ public class DocumentToSQL {
                 }
                 return tmp33;
             case "Column":
+                if (childs.size()<1) return new Column(null, elemLabel);
                 return new Column((Table) visit(childs.get(0)), elemLabel);
             case "Database":
                 return new Database(elemLabel);
             case "Server":
                 return new Server(elemLabel);
             case "Table":
+                if (childs.size()<2) return new Table(elemLabel);
                 Table tmp11 = new Table(elemLabel);
                 tmp11.setDatabase((Database) visit(childs.get(0)));
                 tmp11.setAlias((Alias) visit(childs.get(1)));
@@ -370,6 +385,7 @@ public class DocumentToSQL {
                 // TODO TODO TODO
                 return new Drop();
             case "Execute":
+                if (childs.size()<1) return new Execute();
                 Execute tmp21 = new Execute();
                 tmp21.setName(elemLabel);
                 tmp21.setExprList((ExpressionList) visit(childs.get(0)));
@@ -390,13 +406,16 @@ public class DocumentToSQL {
                 // FEHLT NOCH FEHLT NOCH FEHLT NOCH FEHLT NOCH
                 return null;
             case "FunctionItem":
+                if (childs.size()<2) return new FunctionItem();
                 FunctionItem tmp16 = new FunctionItem();
                 tmp16.setFunction((Function) visit(childs.get(0)));
                 tmp16.setAlias((Alias) visit(childs.get(1)));
                 return tmp16;
             case "Join":
-                // FEHLT NOCH FEHLT NOCH FEHLT NOCH FEHLT NOCH
-                return null;
+                Join tmp49 = new Join();
+                tmp49.setRightItem((FromItem) visit(childs.get(0)));
+                tmp49.setOnExpression((Expression) visit(childs.get(1)));
+                return tmp49;
             case "LateralSubSelect":
                 // FEHLT NOCH FEHLT NOCH FEHLT NOCH FEHLT NOCH
                 return null;
@@ -405,21 +424,26 @@ public class DocumentToSQL {
 
                 List<SelectItem> tmp39SelectItems = new ArrayList<>();
                 List<Element> aa5 = childs.get(0).getChildren();
-                for (Element aa6 : aa5) {tmp39SelectItems.add((SelectItem) visit(aa6));}
+                for (Element aa6 : aa5) {
+                    tmp39SelectItems.add((SelectItem) visit(aa6));
+                }
                 tmp39.setSelectItems(tmp39SelectItems);
-                
+
                 List<Element> tmp40 = childs.get(1).getChildren();
-                tmp39.setFromItem((FromItem) tmp40.get(0));
-                
+                tmp39.setFromItem((FromItem) visit(tmp40.get(0)));
+
                 // entfernt das erste Element
                 tmp40.remove(0);
                 List<Join> tmp41 = new ArrayList<>();
-                for (Element aa7 : tmp40) {tmp41.add((Join) visit(aa7));}
+                for (Element aa7 : tmp40) {
+                    tmp41.add((Join) visit(aa7));
+                }
                 tmp39.setJoins(tmp41);
-                
-                tmp39.setHaving((Expression) visit(childs.get(2)));
-                tmp39.setLimit((Limit) visit(childs.get(3)));
-                tmp39.setOffset((Offset) visit(childs.get(4)));
+
+                tmp39.setWhere((Expression) visit(childs.get(2)));
+                tmp39.setHaving((Expression) visit(childs.get(3)));
+                tmp39.setLimit((Limit) visit(childs.get(4)));
+                tmp39.setOffset((Offset) visit(childs.get(5)));
                 return tmp39;
             case "Limit":
                 // TODO TODO TODO
@@ -433,7 +457,9 @@ public class DocumentToSQL {
                 tmp42.setSelectBody((SelectBody) visit(childs.get(0)));
                 List<Element> tmp43 = childs.get(1).getChildren();
                 List<WithItem> tmp44 = new ArrayList<>();
-                for (Element aa8 : tmp43) {tmp44.add((WithItem) visit(aa8));}
+                for (Element aa8 : tmp43) {
+                    tmp44.add((WithItem) visit(aa8));
+                }
                 tmp42.setWithItemsList(tmp44);
                 return tmp42;
             case "SelectExpressionItem":
