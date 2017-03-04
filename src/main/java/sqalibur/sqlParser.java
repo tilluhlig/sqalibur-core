@@ -5,6 +5,8 @@
  */
 package sqalibur;
 
+import sqalibur.utils.structures.DocumentToJSQL;
+import sqalibur.utils.structures.JSQLToDocument;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -27,8 +27,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.util.deparser.StatementDeParser;
 import org.apache.commons.io.IOUtils;
 import org.jdom.Document;
+import org.jdom.Element;
 import ostepu.cconfig.cconfig;
 import ostepu.file.fileUtils;
 import ostepu.process.command;
@@ -38,9 +42,11 @@ import ostepu.structure.component;
 import ostepu.structure.file;
 import ostepu.structure.marking;
 import ostepu.structure.process;
+import sqalibur.utils.structures.DocumentToJSQL;
 import sqalibur.segments.normalizeSyntax;
 import sqalibur.segments.normalizeSemantics;
 import sqalibur.sqlParser;
+import sqalibur.utils.utils;
 import treeNormalizer.normalization;
 import treeNormalizer.simpleNormalization.simpleNormalization;
 import treeNormalizer.utils.treeUtilities;
@@ -150,9 +156,13 @@ public class postProcess implements command {
             attachmentDocuments.add(sqlParser.parse(att));
         }
 
+        String solutionData = null;
+        String contextData = null;
+
         if (attachmentDocuments.size() == 1) {
             // wenn wir nur einen Anhang haben, dann wird er als Musterlösung verwendet
             normalization.setSolution(attachmentDocuments.get(0));
+            solutionData = attachmentData.get(0);
         } else if (attachmentDocuments.size() == 2) {
             // jetzt müssen wir herausfinden, welche die Musterlösung und welche der Kontext ist
             String typeA = treeUtilities.getQueryType(attachmentDocuments.get(0));
@@ -160,9 +170,13 @@ public class postProcess implements command {
             if (typeA == "CreateTable" && typeB != "CreateTable") {
                 normalization.setContext(attachmentDocuments.get(0));
                 normalization.setSolution(attachmentDocuments.get(1));
+                solutionData = attachmentData.get(1);
+                contextData = attachmentData.get(0);
             } else if (typeB == "CreateTable" && typeA != "CreateTable") {
                 normalization.setContext(attachmentDocuments.get(1));
                 normalization.setSolution(attachmentDocuments.get(0));
+                solutionData = attachmentData.get(0);
+                contextData = attachmentData.get(1);
             } else {
                 setResult(out, response, 409, processObject, "409", "SQaLibur: can't classify the attachments as solution and context (i need a CreateTable and another query type)");
                 return;
@@ -197,8 +211,18 @@ public class postProcess implements command {
         } else {
             // ich kann nicht sagen, ob sie äquivalent sind oder nicht
             markingObject.setPoints("0");
-            String submissionText = treeUtilities.printDocument(normalization.getSubmission().getTree());
-            String solutionText = treeUtilities.printDocument(normalization.getSolution().getTree());
+            String submissionText = utils.DocumentToSQL(normalization.getSubmission().getTree());
+            if (submissionText == null) {
+                // wenn es beim Umwandeln einen Fehler gab, dann nimm die Einsendung
+                submissionText = submissionData;
+            }
+            
+            String solutionText = utils.DocumentToSQL(normalization.getSolution().getTree());
+            if (solutionText == null) {
+                // wenn es beim Umwandeln einen Fehler gab, dann nimm die Einsendung
+                solutionText = solutionData;
+            }
+
             markingFile.setBody(fileUtils.encodeBase64("Die Aequivalenz konnte nicht nachgewiesen werden.\n\nEinsendung:\n" + submissionText + "\n\nMusterloesung:\n" + solutionText));
             markingObject.setStatus(marking.VORLAEUFIG_STATUS);
         }
