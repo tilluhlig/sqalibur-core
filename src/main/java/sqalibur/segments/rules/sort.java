@@ -68,7 +68,7 @@ public class sort extends rule {
             // nur wer Kinder hat und ein passendes Label besitzt kommt in die engere Auswahl
             if (element.getChildren().size() > 0 && sortPattern.get(element.getAttributeValue("class")) != null) {
                 String requiredSubClass[] = sortPattern.get(element.getAttributeValue("class"));
-                if (requiredSubClass.length==0) {
+                if (requiredSubClass.length == 0) {
                     sortMe = true;
                 } else if (!element.isRootElement() && (requiredSubClass[0] == null || element.getAttributeValue("label") == requiredSubClass[0])) {
                     if (requiredSubClass[1] == null || element.getParentElement().getAttributeValue("class") == requiredSubClass[1]) {

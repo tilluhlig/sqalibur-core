@@ -18,44 +18,24 @@ package sqalibur;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import com.google.gson.*;
-import java.io.OutputStream;
-
-//import org.antlr.v4.runtime.BaseErrorListener;
-//import com.google.common.collect.Iterables;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-import ostepu.file.fileUtils;
 import ostepu.process.command;
-import ostepu.request.httpAuth;
 
 /**
+ * Das ist die Hauptklasse der SQaLibur-Komponente, diese behandelt /process,
+ * /compute und /sql Aufrufe. Dabei wählt sie den entsprechende Unteraufruf aus.
  *
- * @author Till
+ * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 @WebServlet(urlPatterns = {})
 public class SQaLibur extends HttpServlet {
@@ -75,6 +55,8 @@ public class SQaLibur extends HttpServlet {
         {"POST", "/sql/sql/formatter"}};
 
     /**
+     * diese Aufrufe werden ausgeführt, wenn die restPattern einen Treffer
+     * liefert
      */
     public command[] restCommands = {
         new sqalibur.commands.postProcess(),
@@ -88,18 +70,21 @@ public class SQaLibur extends HttpServlet {
         null};
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * behandelt alle Anfragetypen und wählt die entsprechende Unterfunktion
      *
-     * @param request  servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @param request  die eingehende Anfrage
+     * @param response das Antwortobjekt
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        PrintWriter out;
+        try {
+            out = response.getWriter();
+        } catch (IOException ex) {
+            Logger.getLogger(SQaLibur.class.getName()).log(Level.SEVERE, null, ex);
+            response.setStatus(500);
+            return;
+        }
 
         String a = request.getRequestURI();
         int b = request.getContextPath().length();
@@ -123,25 +108,26 @@ public class SQaLibur extends HttpServlet {
                 }
             }
 
-        } catch(Exception e){
-            response.sendError(409);
-        }finally {
+        } catch (Exception e) {
+            try {
+                response.sendError(409);
+            } catch (IOException ex) {
+                Logger.getLogger(SQaLibur.class.getName()).log(Level.SEVERE, null, ex);
+                response.setStatus(500);
+            }
+        } finally {
             out.close();
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * behandelt ein GET
      *
-     * @param request  servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @param request  die eingehende Anfrage
+     * @param response das Antwortobjekt
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
@@ -150,16 +136,13 @@ public class SQaLibur extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * behandelt ein POST
      *
-     * @param request  servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @param request  die eingehende Anfrage
+     * @param response das Antwortobjekt
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
@@ -168,15 +151,13 @@ public class SQaLibur extends HttpServlet {
     }
 
     /**
+     * behandelt ein DELETE
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request  die eingehende Anfrage
+     * @param response das Antwortobjekt
      */
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
@@ -185,15 +166,13 @@ public class SQaLibur extends HttpServlet {
     }
 
     /**
+     * behandelt ein PUT
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request  die eingehende Anfrage
+     * @param response das Antwortobjekt
      */
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
@@ -208,7 +187,7 @@ public class SQaLibur extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "die SQaLibur-Komponente normalisiert SQL-Eingaben und prüft die Äquivalenz einer Einsendung zu einer Musterlösung.";
     }// </editor-fold>
 
 }

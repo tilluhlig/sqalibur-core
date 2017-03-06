@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2017 Till Uhlig <till.uhlig@student.uni-halle.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,27 +16,33 @@
  */
 package sqalibur.segments;
 
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.io.IOUtils;
 import ostepu.process.command;
-import treeNormalizer.ruleSet;
 
 /**
+ * diese Klasse soll die Syntaxprüfung durchführen
  *
- * @author Till
+ * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 public class checkSyntax implements command {
 
+    // wir haben aber noch niemanden, der die Syntax prüfen kann (und uns Meldungen liefern kann)
     @Override
-    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+        PrintWriter out;
+        try {
+            out = response.getWriter();
+        } catch (IOException ex) {
+            response.setStatus(500);
+            Logger.getLogger(checkSyntax.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
         response.setStatus(201);
     }
 

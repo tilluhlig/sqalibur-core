@@ -1,56 +1,79 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Till Uhlig <till.uhlig@student.uni-halle.de>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package sqalibur.commands;
 
-import com.google.gson.JsonObject;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import ostepu.cconfig.cconfig;
 import ostepu.process.command;
-import ostepu.structure.component;
-import ostepu.structure.process;
-import sqalibur.segments.rules.knf;
 import treeNormalizer.rule;
 import treeNormalizer.transformation;
 import treeNormalizer.utils.xsltProcessor;
 
 /**
+ * dieser Befehl nimmt eine Anfrage als XML-Baum entgegen und liefert XML
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 public class postXMLNormalize implements command {
 
     @Override
-    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) {
         try {
-            PrintWriter out = response.getWriter();
+            PrintWriter out;
+            try {
+                out = response.getWriter();
+            } catch (IOException ex) {
+                Logger.getLogger(postXMLNormalize.class.getName()).log(Level.SEVERE, null, ex);
+                response.setStatus(500);
+                return;
+            }
 
             // die Eingabe ist eine XML Datenstruktur
-            String incomingXML = IOUtils.toString(request.getInputStream());
+            String incomingXML;
+            try {
+                incomingXML = IOUtils.toString(request.getInputStream());
+            } catch (IOException ex) {
+                Logger.getLogger(postXMLNormalize.class.getName()).log(Level.SEVERE, null, ex);
+                response.setStatus(500);
+                return;
+            }
 
             // diese sollen nun in eine Datenstruktur eingelesen werden
             InputStream stream = new ByteArrayInputStream(incomingXML.getBytes(StandardCharsets.UTF_8));
-            Document document = new SAXBuilder().build(stream);
+            Document document;
+            try {
+                document = new SAXBuilder().build(stream);
+            } catch (IOException ex) {
+                Logger.getLogger(postXMLNormalize.class.getName()).log(Level.SEVERE, null, ex);
+                response.setStatus(500);
+                return;
+            }
 
             rule a = new sqalibur.segments.rules.knf();
             rule a2 = new sqalibur.segments.rules.sort();

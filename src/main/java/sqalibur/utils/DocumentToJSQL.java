@@ -1,9 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Till Uhlig <till.uhlig@student.uni-halle.de>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package sqalibur.utils.structures;
+package sqalibur.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +26,14 @@ import net.sf.jsqlparser.expression.operators.relational.ExistsExpression;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.expression.operators.relational.IsNullExpression;
-import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 import net.sf.jsqlparser.expression.operators.relational.MultiExpressionList;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Database;
 import net.sf.jsqlparser.schema.Server;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.SetStatement;
-import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.alter.Alter;
 import net.sf.jsqlparser.statement.alter.AlterExpression;
-import net.sf.jsqlparser.statement.create.index.CreateIndex;
 import net.sf.jsqlparser.statement.create.table.ColDataType;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
@@ -63,11 +71,21 @@ import net.sf.jsqlparser.statement.update.Update;
 import org.jdom.Element;
 
 /**
+ * Diese Klasse wandelt von Element nach JSQL. Dazu kann die Methode visit() auf
+ * ein Element angewendet werden, welche rekursiv die entsprechenden
+ * Unteraufrufe durchführt.
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 public class DocumentToJSQL {
 
+    /**
+     * setzt die Kinder einer BinaryExpression
+     *
+     * @param a die BinaryExpression, deren Kinder gesetzt werden müssen
+     * @param b das Elementobjekt, welches die Kinder besitzt
+     * @return das entsprechende Objekt
+     */
     public Object visit(BinaryExpression a, Element b) {
         List<Element> childs = b.getChildren();
         if (childs.size() < 2) {
@@ -79,6 +97,12 @@ public class DocumentToJSQL {
         return a;
     }
 
+    /**
+     * wandelt ein Element eines Document in eine Struktur von JSQL um
+     *
+     * @param a das Eingabeelement
+     * @return das entsprechende Objekt
+     */
     public Object visit(Element a) {
         String elemClass = a.getAttributeValue("class");
         String elemLabel = a.getAttributeValue("label");

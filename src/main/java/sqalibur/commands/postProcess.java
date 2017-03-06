@@ -16,36 +16,27 @@
  */
 package sqalibur.commands;
 
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.select.Select;
-import net.sf.jsqlparser.util.deparser.StatementDeParser;
 import org.apache.commons.io.IOUtils;
 import org.jdom.Document;
-import org.jdom.Element;
-import ostepu.cconfig.cconfig;
 import ostepu.file.fileUtils;
 import ostepu.process.command;
 import ostepu.request.httpAuth;
 import ostepu.structure.attachment;
-import ostepu.structure.component;
 import ostepu.structure.file;
 import ostepu.structure.marking;
 import ostepu.structure.process;
-import sqalibur.utils.structures.DocumentToJSQL;
 import sqalibur.segments.normalizeSyntax;
 import sqalibur.segments.normalizeSemantics;
-import sqalibur.sqlParser;
+import sqalibur.utils.sqlParser;
 import sqalibur.utils.utils;
 import treeNormalizer.normalization;
 import treeNormalizer.simpleNormalization.simpleNormalization;
@@ -53,21 +44,32 @@ import treeNormalizer.utils.treeUtilities;
 
 /**
  * Dieser Befehl bearbeitet eingehende Korrekturanfragen (wenn ein Student also
- * etwas einsendet)
+ * etwas einsendet) und führt dann die Normalisierung aus
  *
- * @author Till
+ * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 public class postProcess implements command {
 
     @Override
-    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+        PrintWriter out;
+        try {
+            out = response.getWriter();
+        } catch (IOException ex) {
+            Logger.getLogger(postProcess.class.getName()).log(Level.SEVERE, null, ex);
+            // wenn wir den Writer nicht erhalten, dann kann ich keine Rückgabe erzeugen
+            return;
+        }
 
-        component conf = cconfig.loadConfig(context);
-        JsonObject mycomponent = cconfig.loadComponent(context);
-
-        String incomingProcessString = IOUtils.toString(request.getInputStream());
+        String incomingProcessString;
+        try {
+            incomingProcessString = IOUtils.toString(request.getInputStream());
+        } catch (IOException ex) {
+            // die Eingabe der Anfrage konnte nicht gelesen werden
+            Logger.getLogger(postProcess.class.getName()).log(Level.SEVERE, null, ex);
+            setResult(out, response, 500, new process(), "412", "SQaLibur: can't read the incoming content");
+            return;
+        }
 
         if ("".equals(incomingProcessString)) {
             // es wurden keine Daten übermittelt
@@ -207,7 +209,7 @@ public class postProcess implements command {
             // die Einsendung und die Musterlösung sind äquivalent
             markingObject.setPoints(processObject.getExercise().getMaxPoints());
             markingFile.setBody(fileUtils.encodeBase64("Die Einsendung ist aequivalent zur Musterloesung."));
-            markingObject.setStatus(marking.AUTOMATISCH_STATUS);
+            markingObject.setStatus(marking.STATUS_AUTOMATISCH);
         } else {
             // ich kann nicht sagen, ob sie äquivalent sind oder nicht
             markingObject.setPoints("0");
@@ -216,7 +218,7 @@ public class postProcess implements command {
                 // wenn es beim Umwandeln einen Fehler gab, dann nimm die Einsendung
                 submissionText = submissionData;
             }
-            
+
             String solutionText = utils.DocumentToSQL(normalization.getSolution().getTree());
             if (solutionText == null) {
                 // wenn es beim Umwandeln einen Fehler gab, dann nimm die Einsendung
@@ -224,7 +226,7 @@ public class postProcess implements command {
             }
 
             markingFile.setBody(fileUtils.encodeBase64("Die Aequivalenz konnte nicht nachgewiesen werden.\n\nEinsendung:\n" + submissionText + "\n\nMusterloesung:\n" + solutionText));
-            markingObject.setStatus(marking.VORLAEUFIG_STATUS);
+            markingObject.setStatus(marking.STATUS_VORLAEUFIG);
         }
 
         // das neue Korrekturobjekt muss nun noch zugewiesen werden
@@ -234,10 +236,29 @@ public class postProcess implements command {
         setResult(out, response, 201, processObject, "201", "Die Einsendung wurde durch SQaLibur beurteilt.");
     }
 
+    /**
+     * behandelt ein Process-Object und für einen Status, sowie eine Meldung ein
+     * (gibt es dann aus)
+     *
+     * @param out            etwas zum Ausgeben des Resultats
+     * @param response       ein Response-Objekt des Webservice
+     * @param responseStatus der HTTP-Status der Anfrage (oder null für 200)
+     * @param processObject  das Prozessobjekt
+     * @param Status         der Bearbeitungsstatus des Objekts (oder null)
+     * @param Message        eine Meldung (oder null)
+     */
     public void setResult(PrintWriter out, HttpServletResponse response, int responseStatus, process processObject, String Status, String Message) {
-        processObject.setMessages(new String[]{Message});
-        processObject.setStatus(Status);
-        response.setStatus(responseStatus);
+        if (Message != null) {
+            processObject.setMessages(new String[]{Message});
+        }
+        if (Status != null) {
+            processObject.setStatus(Status);
+        }
+        if (Status == null) {
+            response.setStatus(200);
+        } else {
+            response.setStatus(responseStatus);
+        }
         out.write(processObject.encode());
     }
 

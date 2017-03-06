@@ -5,38 +5,23 @@
  */
 package sqalibur.utils.structures;
 
-import net.sf.jsqlparser.expression.BinaryExpression;
+import sqalibur.utils.DocumentToJSQL;
 import org.jdom.Element;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * testet die DocumentToJSQL-Klasse
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 public class DocumentToJSQLTest {
-    
+
+    /*
+     * der Konstruktor
+     */
     public DocumentToJSQLTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+        // kein Inhalt
     }
 
     /**
@@ -53,5 +38,5 @@ public class DocumentToJSQLTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+
 }

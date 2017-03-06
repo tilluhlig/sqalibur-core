@@ -16,11 +16,9 @@
  */
 package sqalibur.segments;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ostepu.process.command;
@@ -29,22 +27,25 @@ import treeNormalizer.ruleSet;
 import treeNormalizer.transformation;
 
 /**
+ * Dieser Regelsatz enthät Regeln zum Normalisieren der Syntax.
  *
- * @author Till
+ * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 public class normalizeSyntax extends ruleSet implements command {
 
     @Override
-    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
+    public void execute(ServletContext context, HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    // enthält die Regeln dieser Sammlung
     private static List<rule> myRules = null;
 
     private static List<rule> initRuleSet() {
         // wer auch immer diese Regelsammlung nutzen will, soll sie nur 
         // einmal initialisieren
         if (myRules == null) {
+            // hier werden die Regeln dieser Sammlung eingefügt
             myRules = new ArrayList<rule>();
             myRules.add(new sqalibur.segments.rules.knf());
             myRules.add(new sqalibur.segments.rules.sort());

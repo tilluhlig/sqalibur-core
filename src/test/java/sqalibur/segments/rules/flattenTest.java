@@ -9,39 +9,35 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdom.Document;
-import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.input.JDOMParseException;
 import org.jdom.input.SAXBuilder;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.xml.sax.SAXParseException;
 import treeNormalizer.rule;
 import treeNormalizer.transformation;
 import treeNormalizer.utils.treeUtilities;
 
 /**
+ * testet die flatten-Klasse
  *
  * @author Till Uhlig <till.uhlig@student.uni-halle.de>
  */
 public class flattenTest {
 
     /**
-     *
+     * der Konstruktor
      */
     public flattenTest() {
+        // kein Inhalt
     }
 
     /**
      * zwei AND sollen verbunden werden
+     *
+     * @throws org.jdom.JDOMException
      */
     @Test
     public void testPerform() throws JDOMException {
@@ -51,6 +47,8 @@ public class flattenTest {
 
     /**
      * AND => OR darf nicht verschmolzen werden
+     *
+     * @throws org.jdom.JDOMException
      */
     @Test
     public void testPerform2() throws JDOMException {
@@ -60,6 +58,8 @@ public class flattenTest {
 
     /**
      * AND => OR => AND darf nicht verschmolzen werden
+     *
+     * @throws org.jdom.JDOMException
      */
     @Test
     public void testPerform3() throws JDOMException {
@@ -69,13 +69,15 @@ public class flattenTest {
 
     /**
      * eine leere Eingabe
+     *
+     * @throws org.jdom.JDOMException
      */
-    @Test(expected=JDOMException.class)
+    @Test(expected = JDOMException.class)
     public void testPerform4() throws JDOMException {
         run("", "");
     }
 
-    private void run(String input, String expected) throws JDOMException{
+    private void run(String input, String expected) throws JDOMException {
         try {
             String content = input;
             InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
