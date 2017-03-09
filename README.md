@@ -1,5 +1,11 @@
 # SQaLibur-Core
 
+SQaLibur ist ein Java-Webservice zur automatischen Vorkorrektur von studentischen SQL-Einsendungen. Dabei dient die Übungsplattform OSTEPU (https://github.com/ostepu/ostepu-core) als Oberfläche, sodass SQaLibur dort nur als sogenannte ``Verarbeitung`` zu einer Veranstaltung hinzu installiert wird und anschließend durch Übungsleiter für eine Aufgabestellung ausgewählt werden kann. Dabei werden die Einsendungen der Studenten vor dem Speichern zunächst durch SQaLibur betrachtet und versucht die Äquivalenz der Einsendung mit einer Musterlösung nachweisen zu können, um dann im Falle einer inhaltlichen Übereinstimmung bereits die volle Punktzahl zu vergeben.
+
+Zur Prüfung der Äquivalenz setzt SQaLibur auf die Normalisierung von Einsendung und Musterlösung, sodass versucht wird, beide Anfrage syntaktisch gleich zu bekommen und damit die Äquivalenz beider Anfragen zeigen zu können. Dieser Ansatz steckt hierbei jedoch noch in den Kinderschuhen, sodass die Erfolgsrate eher gering ist, jedoch noch ausgebaut werden kann.
+
+Die Regeln zur Normalisierung von Einsendung und Musterlösung können als XSLT-Regeln formuliert werden, wie in https://github.com/tilluhlig/sqalibur-xsltRules, oder direkt in Java auf einem DOM-Objekt programmiert werden. Die Regelverwaltung und den XSLT-Prozessor stellt https://github.com/tilluhlig/sqalibur-treeNormalizer bereit. Zudem wird der SQL-Parser/Deparser aus https://github.com/tilluhlig/JSqlParser verwendet, um die eingehenden Anfragen zu handhaben.
+
 ## Die Anbindung von SQaLibur an eine Veranstaltung
 
 Der neue Bestandteil SQaLibur soll das Erstellen einer Übungsserie erweitern und dabei speziell für eine Veranstaltung installiert werden. Dabei nutzt es den gleichen Ansatz wie das bekannte LOOP von OSTEPU, wobei es als Erweiterung einer Veranstaltung hinzugefügt werden kann 
