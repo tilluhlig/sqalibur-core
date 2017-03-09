@@ -84,6 +84,10 @@
             "target": "LExtension"
         },
         {
+            "name": "external",
+            "target": "LOOP"
+        },
+        {
             "name": "request",
             "target": "CHelp",
             "links": [
