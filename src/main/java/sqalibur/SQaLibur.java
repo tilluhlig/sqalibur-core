@@ -45,7 +45,7 @@ public class SQaLibur extends HttpServlet {
      */
     public String[][] restPattern = {
         {"POST", "/process"}, // bearbeitet eine Einsendung eines Studenten
-        {"POST", "/compute"}, // dieser Befehl wird von OSTEPU aufgerufen (damit ich de nächsten Testfall bearbeite)
+        {"POST", "/testcase/compute"}, // dieser Befehl wird von OSTEPU (bzw. LOOP) aufgerufen (damit ich dem nächsten Testfall bearbeite)
         {"POST", "/sql/xml/normalize"}, // normalisiert eine XML Eingabe
         {"GET", "/sql/sql/normalize"}, // normalisiert eine SQL Eingabe
         {"POST", "/sql/sql/checkSyntax"}, // prüft eine SQL Eingabe auf Syntaxfehler
@@ -60,7 +60,7 @@ public class SQaLibur extends HttpServlet {
      */
     public command[] restCommands = {
         new sqalibur.commands.postProcess(),
-        null,
+        new sqalibur.commands.postComputeTestcase(),
         new sqalibur.commands.postXMLNormalize(),
         new sqalibur.commands.postSQLNormalize(),
         null,

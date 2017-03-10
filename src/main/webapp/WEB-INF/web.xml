@@ -74,6 +74,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <servlet-name>SQaLibur</servlet-name>
         <url-pattern>/sql/*</url-pattern>
         <url-pattern>/process/*</url-pattern>
+        <url-pattern>/testcase/*</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
