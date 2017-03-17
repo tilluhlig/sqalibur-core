@@ -35,7 +35,7 @@ public class ElementList {
     /*
      * die Liste der Elemente (Kindelemente)
      */
-    private List<Element> elements = new ArrayList<Element>();
+    private List<Element> elements = new ArrayList<>();
 
     /**
      * @return the name

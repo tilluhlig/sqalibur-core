@@ -75,6 +75,7 @@ public class postXMLNormalize implements command {
                 return;
             }
 
+            // ab hier werden ein paar Regeln angewendet
             rule a = new sqalibur.segments.rules.knf();
             rule a2 = new sqalibur.segments.rules.sort();
             transformation b = new transformation();
@@ -82,6 +83,7 @@ public class postXMLNormalize implements command {
             a.perform(b);
             a2.perform(b);
 
+            // jetzt wird das Transformierte als XML ausgegeben
             out.write(xsltProcessor.DocumentToXml(b.getTree()));
             response.setStatus(201);
         } catch (JDOMException ex) {

@@ -27,7 +27,7 @@ public class JSQLToDocumentTest {
     @Test
     public void testVisit_1() {
         System.out.println("visit1");
-
+        System.out.println("The test case is a prototype.");
     }
 
 }

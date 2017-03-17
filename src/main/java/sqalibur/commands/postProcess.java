@@ -113,7 +113,7 @@ public class postProcess implements command {
         }
 
         List<attachment> attachments = processObject.getAttachment();
-        List<file> attachmentFiles = new ArrayList<file>();
+        List<file> attachmentFiles = new ArrayList<>();
 
         for (attachment ff : attachments) {
             if (ff.getFile() == null) {
@@ -136,7 +136,7 @@ public class postProcess implements command {
         String submissionData = new String(submission);
 
         // jetzt wollen wir die Anhänge vom Hauptsystem einsammeln
-        List<String> attachmentData = new ArrayList<String>();
+        List<String> attachmentData = new ArrayList<>();
         for (file ff : attachmentFiles) {
             byte[] attachment = fileUtils.getFile(context, ff, true, new httpAuth()); // er verwendet dazu die zuvor geladenen Anmeldedaten
             if (attachment == null) {
@@ -153,10 +153,10 @@ public class postProcess implements command {
         Document submissionDocument = sqlParser.parse(submissionData);
         normalization.setSubmission(submissionDocument);
 
-        List<Document> attachmentDocuments = new ArrayList<Document>();
-        for (String att : attachmentData) {
+        List<Document> attachmentDocuments = new ArrayList<>();
+        attachmentData.forEach((att) -> {
             attachmentDocuments.add(sqlParser.parse(att));
-        }
+        });
 
         String solutionData = null;
         String contextData = null;

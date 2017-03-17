@@ -185,7 +185,7 @@ public class DocumentToJSQL {
                 tmp22.setSwitchExpression((Expression) visit(childs.get(0)));
                 tmp22.setElseExpression((Expression) visit(childs.get(2)));
 
-                List<Expression> whenList = new ArrayList<Expression>();
+                List<Expression> whenList = new ArrayList<>();
                 List<Element> aa = childs.get(1).getChildren();
                 for (Element a2 : aa) {
                     whenList.add((Expression) visit(a2));

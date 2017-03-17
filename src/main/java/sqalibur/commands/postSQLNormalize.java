@@ -26,7 +26,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.jdom.Document;
 import ostepu.process.command;
+import sqalibur.segments.normalizeSemantics;
+import sqalibur.segments.normalizeSyntax;
 import sqalibur.utils.sqlParser;
+import treeNormalizer.normalization;
+import treeNormalizer.simpleNormalization.simpleNormalization;
 import treeNormalizer.utils.xsltProcessor;
 
 /**
@@ -58,8 +62,17 @@ public class postSQLNormalize implements command {
         ///incomingSQL = "SELECT first, last FROM student, abc WHERE (id = 101 OR e_mail IS NULL) OR id = 102";
         Document sqlDocument = sqlParser.parse(incomingSQL);
 
-        // TODO: Normalisierung ???
-        out.write(xsltProcessor.DocumentToXml(sqlDocument));
+        normalization normalization = new simpleNormalization();
+        normalization.setSubmission(sqlDocument);
+        
+        // jetzt werden die Regeln hinzugefügt
+        normalization.addRule(new normalizeSyntax());
+        normalization.addRule(new normalizeSemantics());
+
+        // führt die Normalisierung aus
+        normalization.perform();
+        
+        out.write(xsltProcessor.DocumentToXml(normalization.getSubmission().getTree()));
         ///Calendar cal = Calendar.getInstance();
         ////SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         ////out.write(sdf.format(cal.getTime()));

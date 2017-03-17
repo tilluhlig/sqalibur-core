@@ -80,7 +80,7 @@ public class sqlParser {
      * @return die Anfrage als Document
      */
     public static List<Document> parseStatements(String sql) {
-        List<Document> documents = new ArrayList<Document>();
+        List<Document> documents = new ArrayList<>();
 
         try {
             Statements b = CCJSqlParserUtil.parseStatements(sql);

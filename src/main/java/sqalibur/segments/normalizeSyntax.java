@@ -46,7 +46,7 @@ public class normalizeSyntax extends ruleSet implements command {
         // einmal initialisieren
         if (myRules == null) {
             // hier werden die Regeln dieser Sammlung eingefügt
-            myRules = new ArrayList<rule>();
+            myRules = new ArrayList<>();
             myRules.add(new sqalibur.segments.rules.knf());
             myRules.add(new sqalibur.segments.rules.sort());
         }
