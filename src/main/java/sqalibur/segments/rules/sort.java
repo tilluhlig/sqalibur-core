@@ -48,7 +48,7 @@ public class sort extends rule {
             put("BitwiseAnd", new String[]{});
             put("BitwiseOr", new String[]{});
             put("BitwiseXor", new String[]{});
-            put("ElementList", new String[]{"selectList", "PlainSelect", null});
+            put("selectList", new String[]{});
         }
 
     };

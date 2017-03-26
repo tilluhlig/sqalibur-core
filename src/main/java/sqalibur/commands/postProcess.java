@@ -192,7 +192,9 @@ public class postProcess implements command {
         // jetzt werden die Regeln hinzugefügt
         normalization.addRule(new normalizeSyntax());
         normalization.addRule(new normalizeSemantics());
-
+        
+        ////String q = normalization.getSubmission().prettyPrint();
+        
         // führt die Normalisierung aus
         normalization.perform();
 

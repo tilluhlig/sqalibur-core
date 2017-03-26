@@ -1401,7 +1401,7 @@ public class JSQLToDocument {
             }
         }
 
-        return newElement(a.getClass().getSimpleName(), new Element[]{visit(selectList), visit(fromList), visit(a.getWhere()), visit(a.getHaving()), visit(a.getLimit()), visit(a.getOffset())}, null);
+        return  newElement(a.getClass().getSimpleName(), new Element[]{visit(selectList), visit(fromList), visit(a.getWhere()), visit(a.getHaving()), visit(a.getLimit()), visit(a.getOffset())}, null);
     }
 
     /**

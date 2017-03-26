@@ -501,13 +501,18 @@ public class DocumentToJSQL {
                 tmp39.setSelectItems(tmp39SelectItems);
 
                 List<Element> tmp40 = childs.get(1).getChildren();
-                tmp39.setFromItem((FromItem) visit(tmp40.get(0)));
+                if (tmp40.size() >= 1) {
+                    tmp39.setFromItem((FromItem) visit(tmp40.get(0)));
+                }
+
+                List<Join> tmp41 = new ArrayList<>();
 
                 // entfernt das erste Element
-                tmp40.remove(0);
-                List<Join> tmp41 = new ArrayList<>();
-                for (Element aa7 : tmp40) {
-                    tmp41.add((Join) visit(aa7));
+                if (tmp40.size() >= 1) {
+                    tmp40.remove(0);
+                    for (Element aa7 : tmp40) {
+                        tmp41.add((Join) visit(aa7));
+                    }
                 }
                 tmp39.setJoins(tmp41);
 

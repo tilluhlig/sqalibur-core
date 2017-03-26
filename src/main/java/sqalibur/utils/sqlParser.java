@@ -53,7 +53,7 @@ public class sqlParser {
             JSQLToDocument m = new JSQLToDocument();
             root.addContent(m.visit(a));
 
-            DocumentToJSQL m2 = new DocumentToJSQL();
+            /*DocumentToJSQL m2 = new DocumentToJSQL();
             List<Element> ll = root.getChildren();
             Statement a2 = (Statement) m2.visit(ll.get(0));
 
@@ -65,7 +65,7 @@ public class sqlParser {
                 c.visit((Select) a2);
             }
             StringBuilder q2 = c.getBuffer();
-            String q3 = q2.toString();
+            String q3 = q2.toString();*/
         } catch (JSQLParserException ex) {
             Logger.getLogger(sqlParser.class.getName()).log(Level.SEVERE, null, ex);
         }
