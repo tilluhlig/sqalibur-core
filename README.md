@@ -11,7 +11,8 @@ Die Regeln zur Normalisierung von Einsendung und Musterlösung können als XSLT-
 Der neue Bestandteil SQaLibur soll das Erstellen einer Übungsserie erweitern und dabei speziell für eine Veranstaltung installiert werden. Dabei nutzt es den gleichen Ansatz wie das bekannte LOOP von OSTEPU, wobei es als Erweiterung einer Veranstaltung hinzugefügt werden kann 
 
 ![A: die SQaLibur Erweiterung installieren](images/ostepu-course/A.png)
-> A: die SQaLibur Erweiterung installieren
+
+*A: die SQaLibur Erweiterung installieren*
 
 Wie in Abbildung A zu sehen, muss SQaLibur ausgewählt und über die Schaltfläche ``speichern`` entsprechend installiert werden. Dabei legt SQaLibur einen neuen Eintrag in der Datenbank an, durch welchen es als verarbeitendes Modul beim Erstellen von Übungsserien gewählt werden kann. Damit ist es SQaLibur möglich, auf das Einsenden eines Studenten zu reagieren und Bewertungen der Einsendungen beim Hochladen vorzunehmen.
 
@@ -21,12 +22,14 @@ Damit SQaLibur in einer Übungsserie verwendet wird, muss es als Verarbeitung f�
 Darüber hinaus erfolgt die Erstellung einer Übungsserie und Aufgabe wie bisher.
 
 ![B: SQaLibur als Verarbeitung wählen](images/ostepu-serieErstellen/A.png)
-> B: SQaLibur als Verarbeitung wählen
+
+*B: SQaLibur als Verarbeitung wählen*
 
 Dazu wird also entsprechend Abbildung B ausgewählt, dass man eine Verarbeitung verwenden möchte.
 
 ![C: SQaLibur als Verarbeitung konfigurieren](images/ostepu-serieErstellen/B.png)
-> C: SQaLibur als Verarbeitung konfigurieren
+
+*C: SQaLibur als Verarbeitung konfigurieren*
 
 Nun muss wie in Abbildung C das Modul SQaLibur gewählt werden, sodass sich der Konfigurationsbereich des Moduls öffnet. Hier können wir nun jeweils eine SQL-Datei als Musterlösung und für den Kontext hochladen. Dabei ist es unwichtig in welcher Reihenfolge die geschieht, denn die Zuordnung erfolgt anhand der enthaltenen SQL-Elemente. Wenn er also eine Create-Table Anweisung erkennt, so wird er diese Datei als Kontext betrachten. Wenn er eine andere Art von Anfragen in der jeweiligen Datei findet oder nur eine einzelne Datei eingereicht wird, so wir er diese als Musterlösung interpretieren.
 
