@@ -105,18 +105,6 @@
                 },
                 {
                     "path": "/help/:language/extension/SQaLibur/SQaLiburC.png"
-                },
-                {
-                    "path": "/help/:language/extension/SQaLibur/SQaLiburD.png"
-                },
-                {
-                    "path": "/help/:language/extension/SQaLibur/SQaLiburE.png"
-                },
-                {
-                    "path": "/help/:language/extension/SQaLibur/SQaLiburF.png"
-                },
-                {
-                    "path": "/help/:language/extension/SQaLibur/SQaLiburG.png"
                 }
             ]
         }

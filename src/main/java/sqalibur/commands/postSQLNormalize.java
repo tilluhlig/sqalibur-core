@@ -64,14 +64,14 @@ public class postSQLNormalize implements command {
 
         normalization normalization = new simpleNormalization();
         normalization.setSubmission(sqlDocument);
-        
+
         // jetzt werden die Regeln hinzugefügt
         normalization.addRule(new normalizeSyntax());
         normalization.addRule(new normalizeSemantics());
 
         // führt die Normalisierung aus
         normalization.perform();
-        
+
         out.write(xsltProcessor.DocumentToXml(normalization.getSubmission().getTree()));
         ///Calendar cal = Calendar.getInstance();
         ////SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
