@@ -26,7 +26,7 @@ import treeNormalizer.utils.xsltProcessor;
  * diese Regel glättet Elemente, sodass also beispielsweise die Darstellung der
  * Assoziativität von AND Operatoren entfernt wird
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class flatten extends rule {
 

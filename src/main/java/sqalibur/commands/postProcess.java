@@ -46,7 +46,7 @@ import treeNormalizer.utils.treeUtilities;
  * Dieser Befehl bearbeitet eingehende Korrekturanfragen (wenn ein Student also
  * etwas einsendet) und führt dann die Normalisierung aus
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class postProcess implements command {
 

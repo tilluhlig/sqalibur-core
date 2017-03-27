@@ -75,7 +75,7 @@ import org.jdom.Element;
  * ein Element angewendet werden, welche rekursiv die entsprechenden
  * Unteraufrufe durchführt.
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class DocumentToJSQL {
 

@@ -25,7 +25,7 @@ import ostepu.process.command;
  * dieser Aufruf soll eine SQL-Eingabe formatieren und in schöner Form
  * zurückgeben
  *
- * @author Till
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class formatter implements command {
 

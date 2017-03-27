@@ -38,7 +38,7 @@ import treeNormalizer.utils.xsltProcessor;
 /**
  * dieser Befehl nimmt eine Anfrage als XML-Baum entgegen und liefert XML
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class postXMLNormalize implements command {
 

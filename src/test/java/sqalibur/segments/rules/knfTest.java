@@ -23,7 +23,7 @@ import treeNormalizer.utils.treeUtilities;
 /**
  * testet die knf-Klasse
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class knfTest {
 

@@ -30,7 +30,7 @@ import treeNormalizer.utils.treeUtilities;
 /**
  * diese Regel sortiert die Kinder von kommutativen Elementen
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class sort extends rule {
 

@@ -30,8 +30,10 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
+ * Diese Klasse bietet statische Methoden zum Parsen von SQL-Statements nach
+ * Document
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class sqlParser {
 
@@ -53,19 +55,18 @@ public class sqlParser {
             JSQLToDocument m = new JSQLToDocument();
             root.addContent(m.visit(a));
 
-            /*DocumentToJSQL m2 = new DocumentToJSQL();
-            List<Element> ll = root.getChildren();
-            Statement a2 = (Statement) m2.visit(ll.get(0));
-
-            int q = 1;
-
-            StringBuilder b = new StringBuilder();
-            StatementDeParser c = new StatementDeParser(b);
-            if (a2 instanceof Select) {
-                c.visit((Select) a2);
-            }
-            StringBuilder q2 = c.getBuffer();
-            String q3 = q2.toString();*/
+            /*
+             * DocumentToJSQL m2 = new DocumentToJSQL(); List<Element> ll =
+             * root.getChildren(); Statement a2 = (Statement)
+             * m2.visit(ll.get(0));
+             *
+             * int q = 1;
+             *
+             * StringBuilder b = new StringBuilder(); StatementDeParser c = new
+             * StatementDeParser(b); if (a2 instanceof Select) {
+             * c.visit((Select) a2); } StringBuilder q2 = c.getBuffer(); String
+             * q3 = q2.toString();
+             */
         } catch (JSQLParserException ex) {
             Logger.getLogger(sqlParser.class.getName()).log(Level.SEVERE, null, ex);
         }

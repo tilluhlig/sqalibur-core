@@ -29,7 +29,7 @@ import treeNormalizer.transformation;
 /**
  * Dieser Regelsatz enthät Regeln zum Normalisieren der Syntax.
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class normalizeSyntax extends ruleSet implements command {
 

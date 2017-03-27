@@ -28,7 +28,7 @@ import ostepu.process.command;
 /**
  * diese Klasse soll die Syntaxprüfung durchführen
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class checkSyntax implements command {
 

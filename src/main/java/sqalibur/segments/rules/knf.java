@@ -25,7 +25,7 @@ import treeNormalizer.utils.treeUtilities;
 /**
  * diese Regel erzeugt die konjunktive Normalform (unsortiert)
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class knf extends rule {
 

@@ -24,7 +24,7 @@ import ostepu.process.command;
 /**
  * Diese Klasse soll die Semantikprüfung durchführen
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class checkSemantics implements command {
 

@@ -35,7 +35,7 @@ import ostepu.process.command;
  * Das ist die Hauptklasse der SQaLibur-Komponente, diese behandelt /process,
  * /compute und /sql Aufrufe. Dabei wählt sie den entsprechende Unteraufruf aus.
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 @WebServlet(urlPatterns = {})
 public class SQaLibur extends HttpServlet {

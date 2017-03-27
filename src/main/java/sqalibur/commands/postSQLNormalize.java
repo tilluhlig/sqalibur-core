@@ -36,7 +36,7 @@ import treeNormalizer.utils.xsltProcessor;
 /**
  * dieser Befehl nimmt SQL entgegen und gibt eine XML-Struktur zurück
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class postSQLNormalize implements command {
 

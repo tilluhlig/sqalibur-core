@@ -26,7 +26,7 @@ import treeNormalizer.transformation;
 /**
  * Dieser Regelsatz enthät Regeln zum Normalisieren der Semantik.
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class normalizeSemantics extends ruleSet implements command {
 

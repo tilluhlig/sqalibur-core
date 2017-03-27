@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 /**
  * testet die DocumentToJSQL-Klasse
  *
- * @author Till Uhlig <till.uhlig@student.uni-halle.de>
+ * @author Till Uhlig {@literal <till.uhlig@student.uni-halle.de>}
  */
 public class DocumentToJSQLTest {
 
