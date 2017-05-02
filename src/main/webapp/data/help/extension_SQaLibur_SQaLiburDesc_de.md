@@ -36,4 +36,5 @@ Nun muss wie in Abbildung C das Modul SQaLibur gewählt werden, sodass sich der 
 Wenn die Übungsserie nun in dieser Form angelegt wird, können die Studenten ihre Einsendungen hochladen, welche dann durch OSTEPU während des Einsendevorgangs zunächst von SQaLibur bearbeitet werden.
 
 ## Die Verwendung von SQaLibur durch Studenten
-TODO TODO TODO
+
+Die Studenten senden ihre Lösungen wie bisher über den Bereich "Lösungen einsenden" ein. SQaLibur wird daraufhin eine Korrekturdatei "Bericht.txt" erzeugen, welcher auch noch durch einen Tutor bearbeitet werden kann.
